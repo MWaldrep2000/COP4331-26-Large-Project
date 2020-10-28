@@ -43,6 +43,6 @@ function Login() {
             <span id="loginResult">{message}</span>
         </div>
     );
-}
+};
 
-export default Login; 
+export default Login;
