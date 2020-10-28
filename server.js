@@ -75,12 +75,12 @@ app.post('/api/login', async (req, res, next) =>
         validated = results[0].Validated;
     }
     else
-        error = "Invalid Username/Password"
+        error + "Inavlid Username/Password";
 
     //here we are returning what we got back to the function
     //So we're returning an id, a firstname, lastname and an
     //error if any
-    var ret = {Flag:flag, Email:email, Validated:validated, error:error};
+    var ret = {Flag:flag, Email:email, Validated:validated, Error:error};
     res.status(200).json(ret);
 });
 
