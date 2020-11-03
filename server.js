@@ -21,25 +21,6 @@ app.use((req, res, next) => {
 
 app.listen(5000); // start Node + Express server on port 5000
 
-// app.post('/api/login', async (req, res, next) => {  
-//     // incoming: login, password  
-//     // outgoing: id, firstName, lastName, error  
-//     var error = '';  
-//     const { username, password } = req.body;  
-//     var id = -1;  
-//     var fn = '';  
-//     var ln = '';  
-//     if( username.toLowerCase() == 'test' && password == 'test' )  {
-//         id = 1;    
-//         fn = 'testfirst';    
-//         ln = 'testlast';  
-//     }  else  {    
-//         error = 'Invalid user name/password';  
-//     }  
-//     var ret = { id:id, firstName:fn, lastName:ln, error:error};  
-//     res.status(200).json(ret);
-// });
-
 app.post('/api/login', async (req, res, next) => 
 {
     // incoming: login, password
@@ -51,10 +32,6 @@ app.post('/api/login', async (req, res, next) =>
     //req is what was sent over from the login function
     //which is login and password
     const { login, password } = req.body;
-
-    //this is just the API so i dont have the server code here
-    //but client has the all the info for the MongoDB database
-    //and allows us to connect to it
 
     //So db.collection('Users') accesses the collection in the database
     //called Users and attempts to find a user with the login and password
@@ -73,6 +50,7 @@ app.post('/api/login', async (req, res, next) =>
         flag = 1;
         email = results[0].Email;
         validated = results[0].Validated;
+        id = results[0]._id;
     }
     else
         error = "Inavlid Username/Password";
@@ -80,18 +58,64 @@ app.post('/api/login', async (req, res, next) =>
     //here we are returning what we got back to the function
     //So we're returning an id, a firstname, lastname and an
     //error if any
-    var ret = {Flag:flag, Email:email, Validated:validated, Error:error};
+    var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
     res.status(200).json(ret);
 });
 
 app.post('/api/register', async (req, res, next) => {  
     // incoming: username, password  
     // outgoing: id, error  
-    const { username, password } = req.body;  
-    var ret = { id:id, firstName:fn, lastName:ln, error:error};  
+
+    //create empty error string
+    var error = "Registration Complete"
+    var validated = 0
+    //req is what was sent over from the login function
+    //which is username, password and email
+    const { username, password, email } = req.body;  
+
+    //create the body for a new user to add to the Users collection
+    //We dont need to add an ID since MongoDB seems to do that for us
+    const newUser = {Username:username, Password:password, Validated:validated, Email:email,};
+    try
+    {
+        //Connect with the database
+        const db = client.db();
+
+        //before we add a user we need to see if the username is taken
+        const result1 = await db.collection('User').find({Username:username}).toArray();
+
+        //if we get a result that means that the username is taken and return with error
+        if(result1.length > 0)
+        {
+            error = "Username is taken";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+
+        //Now to see if the email is taken
+        const result2 = await db.collection('User').find({Email:email}).toArray();
+
+        //if we get a result that means that the email is taken and return with error
+        if(result2.length > 0)
+        {
+            error = "Account with this email already exists";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+
+        //if neither the username or email is taken, then we
+        //can add the new user
+        const result = db.collection('User').insertOne(newUser);
+    }
+    catch(e)
+    {
+        error = e.toString();
+    }
+
+    var ret = {Error:error};  
     res.status(200).json(ret);
-
-
 });
 
 
