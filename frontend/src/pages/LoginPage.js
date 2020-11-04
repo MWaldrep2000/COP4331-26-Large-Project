@@ -1,12 +1,17 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle';
 import Login from '../components/Login';
+import CreateAccount from '../components/CreateAccount';
 
-const LoginPage = () => {
+
+
+
+const LoginPage = ({state}) => {
+
     return (
         <div>
             <PageTitle />
-            <Login />
+            {state === true ? <Login /> : <CreateAccount />}
         </div>
     );
 }

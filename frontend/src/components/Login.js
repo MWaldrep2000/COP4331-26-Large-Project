@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 function Login() {
+
     var loginName, loginPassword;
 
     const [message, setMessage] = useState('');
@@ -31,15 +32,16 @@ function Login() {
     }; 
 
     return (
-        <div id="loginDiv">
 
+        
+        <div id="loginDiv">
             <form onSubmit={ doLogin }>
                 <span id="inner-title">Username: Test <br /> Password: abc123</span><br />
                 <input type="text" id="loginName" placeholder="Username"   ref={(c) => loginName = c} /><br />
                 <input type="password" id="loginPassword" placeholder="Password"   ref={(c) => loginPassword = c} /><br />
                 <input type="submit" id="loginButton" class="buttons" value="Login" onClick={doLogin} />       
             </form>
-            <a href="/register">Click Here To Register</a><br />
+            {/* <a href="/register">Click Here To Register</a><br /> */}
             <span id="loginResult">{message}</span>
         </div>
     );
