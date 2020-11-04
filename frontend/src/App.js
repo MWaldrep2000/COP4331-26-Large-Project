@@ -27,22 +27,4 @@ function App() {
         </Router>
     );
   }
-
-
-// function App() {
-//   return (
-//       <Router >
-//           <Switch>
-//               <Route path="/" exact>
-//                   <LoginPage />
-//               </Route>
-//               <Route path="/home" exact>
-//                   <HomePage />
-//               </Route>
-//               <Redirect to="/" />
-//           </Switch>
-//       </Router>
-//   );
-// }
-
 export default App;
