@@ -10,7 +10,6 @@ const LoginPage = ({state}) => {
 
     return (
         <div>
-            <PageTitle />
             {state === true ? <Login /> : <CreateAccount />}
         </div>
     );

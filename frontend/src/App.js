@@ -8,21 +8,34 @@ import HomePage from './pages/HomePage';
 function App() {
 
     const [state, setState] = useState(true);
+    const [message, setMessage] = useState('New User? Register Here!');
 
     const handleClick = (e) => {
         setState(!state);
+        formMessage();
+    }
+
+    const formMessage = (e) => {
+        (state === true) ? setMessage('Return to Login') : setMessage('New User? Register Here!');
     }
 
     return (
         <Router >
             <Switch>
-                <Route path="/" exact>
-                    <LoginPage state={state} />
-                    <p onClick={handleClick}>Click Here to Register</p>
-                </Route>
-                <Route path="/home" exact>
-                    <HomePage /> 
-                </Route>
+                <div className="page-div">
+                    <Route path="/" exact>
+                        <div className="login-box">
+                            <div className="logo"></div>
+                            <div className="login-div">
+                                <LoginPage state={state} />
+                                <p className="register-click" onClick={handleClick}>{message}</p>
+                            </div>
+                        </div>
+                    </Route>
+                    <Route path="/home" exact>
+                        <HomePage /> 
+                    </Route>
+                </div>
             </Switch>
         </Router>
     );

@@ -34,15 +34,15 @@ function Login() {
     return (
 
         
-        <div id="loginDiv">
-            <form onSubmit={ doLogin }>
-                <span id="inner-title">Username: Test <br /> Password: abc123</span><br />
-                <input type="text" id="loginName" placeholder="Username"   ref={(c) => loginName = c} /><br />
-                <input type="password" id="loginPassword" placeholder="Password"   ref={(c) => loginPassword = c} /><br />
-                <input type="submit" id="loginButton" class="buttons" value="Login" onClick={doLogin} />       
+        <div>
+            <form className="login-form" onSubmit={ doLogin }>
+                <input className="form-input" type="text" id="loginName" placeholder="Username"   ref={(c) => loginName = c} />
+                <input className="form-input" type="password" id="loginPassword" placeholder="Password"   ref={(c) => loginPassword = c} />
+                <span className="fpwrd-text" >Forgot Password?</span>
+                <div className="loginButton">
+                    <input type="submit" className="buttons" value="Login" onClick={doLogin} />       
+                </div>
             </form>
-            {/* <a href="/register">Click Here To Register</a><br /> */}
-            <span id="loginResult">{message}</span>
         </div>
     );
 };

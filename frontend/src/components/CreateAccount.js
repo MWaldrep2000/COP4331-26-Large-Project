@@ -28,13 +28,14 @@ function Register() {
     return (
         <div id="registerDiv">
 
-            <form onSubmit={ doCreation }>
-                <span id="inner-title">Please Enter Your Information</span><br />
-                <input type="text" id="username" placeholder="Username"   ref={(c) => createUsername = c} /><br />
-                <input type="password" id="loginPassword" placeholder="Password"   ref={(c) => createPassword = c} /><br />
-                <input type="submit" id="loginButton" class="buttons" value="Create Account" onClick={doCreation} />       
+            <form className="register-form" onSubmit={ doCreation }>
+                <input className="form-input" type="text" id="username" placeholder="Username"   ref={(c) => createUsername = c} />
+                <input className="form-input" type="text" id="email" placeholder="Email" />
+                <input className="form-input" type="password" id="password" placeholder="Password"   ref={(c) => createPassword = c} />
+                <div className="registerButton">
+                    <input className="buttons" type="submit" id="loginButton" class="buttons" value="Create Account" onClick={doCreation} />       
+                </div>
             </form>
-            <span id="creationResult">{message}</span>
         </div>
     );
 }
