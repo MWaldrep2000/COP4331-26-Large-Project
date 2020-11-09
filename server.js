@@ -171,13 +171,5 @@ app.post('/api/createGroup', async (req, res, next) => {
     var ret = {Error:error};
     res.status(200).json(ret);
 
-    // //Now that the group has been created, we need to get the newly
-    // //created group's ID number so we can create a new member
-    // //So first find the new group
-    // const result2 = await db.collection('Group').find({Name:groupname}).toArray();
-
-    // groupID = result2._id;
-    
-    // const newMember = {UserID:userID, GroupID:groupID};
 });
 app.listen(5000);
