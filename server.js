@@ -118,5 +118,66 @@ app.post('/api/register', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
+app.post('/api/createGroup', async (req, res, next) => {
+    // incoming: userID, group name  
+    // outgoing: id, error  
 
+    //create error variables for the creation of
+    //the group and the member
+    var error = "";
+
+    //req is what was sent over from the login function
+    //which is userID, and groupname
+    const {userID, groupname} = req.body;
+
+    //create the body for a new group to add to the Group Collection
+    //We dont need to add an ID since MongoDB seems to do that for us
+    const newGroup = {Name:groupname};
+    try{
+         //Connect with the database
+         const db = client.db();
+
+         //before we add a group we need to see if the group already exists
+         const result1 = await db.collection('Group').find({Name:groupname}).toArray();
+ 
+         //if we get a result that means that the group already exists and we return with an error
+         if(result1.length > 0)
+         {
+             error = "Group already Exists";
+             var ret = {Error:error};
+             res.status(200).json(ret);
+             return;
+         }
+        
+        //if nothing from result1 then the group does not exist yet and we can create it
+        const groupResult = await db.collection('Group').insertOne(newGroup);
+
+        //Now that the group has been created, we need to get the newly
+        //created group's ID number so we can create a new member
+
+        //So when we do db.collection().insertOne(), it returns a boolean 'acknowledged' and 
+        //a field called 'insertedID' which contains the _id value of the inserted document
+        groupID = groupResult.insertedId;
+        role = "admin"
+    
+        const newMember = {UserID:userID, GroupID:groupID, Role:role};
+
+        const memberResult = db.collection('Member').insertOne(newMember);
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    var ret = {Error:error};
+    res.status(200).json(ret);
+
+    // //Now that the group has been created, we need to get the newly
+    // //created group's ID number so we can create a new member
+    // //So first find the new group
+    // const result2 = await db.collection('Group').find({Name:groupname}).toArray();
+
+    // groupID = result2._id;
+    
+    // const newMember = {UserID:userID, GroupID:groupID};
+});
 app.listen(5000);
