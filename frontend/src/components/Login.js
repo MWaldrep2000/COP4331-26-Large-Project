@@ -31,9 +31,7 @@ function Login() {
         }        
     }; 
 
-    return (
-
-        
+    return (    
         <div>
             <form className="login-form" onSubmit={ doLogin }>
                 <input className="form-input" type="text" id="loginName" placeholder="Username"   ref={(c) => loginName = c} />
