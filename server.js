@@ -53,7 +53,7 @@ app.post('/api/login', async (req, res, next) =>
         id = results[0]._id;
     }
     else
-        error = "Inavlid Username/Password";
+        error = "Invalid Username/Password";
 
     //here we are returning what we got back to the function
     //So we're returning an id, a firstname, lastname and an
@@ -63,7 +63,7 @@ app.post('/api/login', async (req, res, next) =>
 });
 
 app.post('/api/register', async (req, res, next) => {  
-    // incoming: username, password  
+    // incoming: username, password, email  
     // outgoing: id, error  
 
     //create empty error string
