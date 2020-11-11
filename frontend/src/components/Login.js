@@ -14,13 +14,14 @@ function Login() {
         var js = JSON.stringify(obj);        
         
         try {                
-            const response = await fetch('http://localhost:5000/api/login', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});            
+            const response = await fetch('http://localhost:5000/api/login', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}}); 
+            alert("login success");           
             var res = JSON.parse(await response.text());
             if( res.Flag <= 0 ) {                
                 setMessage('User/Password combination incorrect');            
             } else {      
                 // Temporary user display          
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id};           
+                var user = {Email:res.Email,ID:res.ID};           
                 localStorage.setItem('user_data', JSON.stringify(user));                
                 setMessage('');               
                 window.location.href = '/home';            

@@ -6,7 +6,7 @@ const MyIssues = () => {
         <div className="fullscreen">
             <NavBar/>
             <div>
-                This is the create group page.
+                This is the My Issues.
             </div>
         </div>
     );

@@ -1,12 +1,13 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
+import CreateGroupForm from '../components/CreateGroupForm';
 
 const CreateGroup = () => {
     return (
         <div className="fullscreen">
             <NavBar/>
             <div>
-                This is the create group page.
+                <CreateGroupForm/>
             </div>
         </div>
     );
