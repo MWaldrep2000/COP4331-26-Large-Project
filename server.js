@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { ObjectId } = require('mongodb');
 
 const app = express();
 app.use(cors());
@@ -221,7 +222,7 @@ app.post('/api/searchGroup', async (req, res, next) => {
 
 app.post('/api/readGroup', async (req, res, next) => {
     //Similar to searchGroup but instead returns every single group
-    //incoming: nothing
+    //incoming: flag and userID
     //outgoing: array with all the groups
 
     //Create empty error variable
@@ -230,32 +231,64 @@ app.post('/api/readGroup', async (req, res, next) => {
     //create a new variable with the search string being trimmed down of any extra whitespace
     var search = "";
 
-    try{
-        
-        //Connect to the database and try to find any groups
-        const db = client.db();
+    const {flag, userID} = req.body;
+    //if flag equals 0 then we return everysingle group in the database
 
-        //any results that show up will go into results
-        //each individual index in results will the name of the group as well as the id of that group
-        const results = await db.collection('Group').find({"Name":{$regex:search+'.*', $options:'r'}}).toArray();
+    if (flag == 0){
+        try{
+            //Connect to the database and try to find any groups
+            const db = client.db();
 
-        //have a variable that has the length of the results
-        //error contains a message of how many elements there are
-        var amount = results.length;
-        error = amount.toString()+" results";
+            //any results that show up will go into results
+            //each individual index in results will the name of the group as well as the id of that group
+            const results = await db.collection('Group').find({"Name":{$regex:search+'.*', $options:'r'}}).toArray();
 
-        //for some reason i cant send results so i made an array that
-        //will have the resuls and thats what will be sent back
-        var _ret = [];
-        for( var i=0; i<results.length; i++ )
-        {
-            _ret.push( results[i]);
+            
+            //have a variable that has the length of the results
+            //error contains a message of how many elements there are
+            var amount = results.length;
+            error = amount.toString()+" results";
+
+            //for some reason i cant send results so i made an array that
+            //will have the resuls and thats what will be sent back
+            var _ret = [];
+            for( var i=0; i<results.length; i++ )
+            {
+                _ret.push(results[i]);
+            }
+        }
+        catch(e){
+            error = e.toString()
         }
     }
-    catch(e){
-        error = e.toString()
-    }
+    else{
+        try{
+            //Connect to the database and try to find any groups
+            const db = client.db();
 
+            //Here we're getting every group that the user is in
+            const results1 = await db.collection('Member').find({"UserID":{$regex:userID+'.*', $options:'r'}}).toArray();
+
+            //have a variable that has the length of the results
+            //error contains a message of how many elements there are
+            var amount = results1.length;
+            error = amount.toString()+" results";
+
+            //Create empty array that we will be adding to
+            var _ret = [];
+
+            //We need to find each of the group names that the user is in
+            for (var i=0; i<results1.length; i++){
+                const results2 = await db.collection('Group').find({"_id": ObjectId(results1[i].GroupID)}).toArray();
+
+                //results2 should now have element in its array, that has an _id for the group as well as the name of the group
+                _ret.push(results2[0]);
+            }
+        }
+        catch(e){
+            error = e.toString();
+        }
+    }
     var ret = {Results:_ret, Error:error};
     res.status(200).json(ret);
 });
@@ -307,4 +340,25 @@ app.post('/api/joinGroup', async (req, res, next) => {
     var ret = {Error:error};
     res.status(200).json(ret);
 });
+
+app.post('/api/createIssue', async (req, res, next) => {
+
+});
+
+app.post('/api/readIssue', async (req, res, next) => {
+
+});
+
+app.post('/api/searchIssue', async (req, res, next) => {
+
+});
+
+app.post('/api/replyToIssue', async (req, res, next) => {
+
+});
+
+app.post('/api/readReplies', async (req, res, next) => {
+    
+});
+
 app.listen(5000);
