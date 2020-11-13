@@ -1,16 +1,15 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle';
-import LoggedInName from '../components/LoggedInName';
 import NavBar from '../components/NavBar';
+import UserProfile from '../components/UserProfile';
+import HomePageGroups from '../components/HomePageGroups';
 
 const HomePage = () => {
     return (
         <div className="fullscreen">
             <NavBar/>
-            <div>
-                <PageTitle/>
-                <LoggedInName/>
-            </div>
+            <UserProfile />
+            <HomePageGroups />
         </div>
     );
 }

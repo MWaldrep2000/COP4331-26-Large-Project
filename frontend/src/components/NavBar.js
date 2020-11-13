@@ -17,13 +17,16 @@ const NavBar = () => {
         window.location.href = '/myGroups'; 
     }
 
+    const goSearch = (e) => {
+        window.location.href = '/search'; 
+    }
+
     return (
         <div className="navbar">
-            <div className="navlogo"></div>
-            <div className="navbuttons" onClick={goHome}>HOME</div>
+            <div className="navlogo" onClick={goHome}></div>
             <div className="navbuttons" onClick={goToMyGroup}>MY GROUPS</div>
             <div className="navbuttons" onClick={goToMyIssues}>MY ISSUES</div>
-            <div className="navbuttons">SEARCH GROUP</div>
+            <div className="navbuttons" onClick={goSearch}>SEARCH GROUP</div>
             <div className="navbuttons" onClick={goToCreateGroup}>CREATE GROUP</div>
         </div>
     );
