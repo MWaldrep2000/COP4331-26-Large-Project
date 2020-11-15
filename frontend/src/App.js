@@ -15,6 +15,9 @@ function App() {
     const [state, setState] = useState(true);
     const [message, setMessage] = useState('New User? Register Here!');
 
+
+
+
     const handleClick = (e) => {
         setState(!state);
         formMessage();
@@ -24,10 +27,11 @@ function App() {
         (state === true) ? setMessage('Return to Login') : setMessage('New User? Register Here!');
     }
 
+
     return (
         <Router >
             <Switch>
-                <div className="page-div">
+                {/* <div className="page-div"> */}
                     <Route path="/" exact>
                         <div className="login-box">
                             <div className="logo"></div>
@@ -52,7 +56,7 @@ function App() {
                     <Route path="/search" exact>
                         <SearchGroups /> 
                     </Route>
-                </div>
+                {/* </div> */}
             </Switch>
         </Router>
     );
