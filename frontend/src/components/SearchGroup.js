@@ -80,6 +80,7 @@ function SearchGroup (){
             joinButton.addEventListener('click', new function() {
                 joinGroup(joinButton.getAttribute("id"));});
             console.log(joinButton);
+            
 
             tr.appendChild(joinButton);
             //add the row to the tbody
