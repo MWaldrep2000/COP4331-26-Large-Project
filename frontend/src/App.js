@@ -5,7 +5,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import CreateGroup from './pages/CreateGroup';
 import MyGroups from './pages/MyGroups';
-import SearchGroups from './pages/SearchGroups.js';
+import SearchGroups from './pages/SearchGroups';
 import MyIssues from './pages/MyIssues';
 
 
