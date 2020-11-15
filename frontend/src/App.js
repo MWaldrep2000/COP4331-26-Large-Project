@@ -31,13 +31,15 @@ function App() {
     return (
         <Router >
             <Switch>
-                {/* <div className="page-div"> */}
+                <div className="page-div">
                     <Route path="/" exact>
-                        <div className="login-box">
-                            <div className="logo"></div>
-                            <div className="login-div">
-                                <LoginPage state={state} />
-                                <p className="register-click" onClick={handleClick}>{message}</p>
+                        <div className="page-div2">
+                            <div className="login-box">
+                                <div className="logo"></div>
+                                <div className="login-div">
+                                    <LoginPage state={state} />
+                                    <p className="register-click" onClick={handleClick}>{message}</p>
+                                </div>
                             </div>
                         </div>
                     </Route>
@@ -56,7 +58,7 @@ function App() {
                     <Route path="/search" exact>
                         <SearchGroups /> 
                     </Route>
-                {/* </div> */}
+                </div>
             </Switch>
         </Router>
     );
