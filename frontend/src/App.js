@@ -5,7 +5,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import CreateGroup from './pages/CreateGroup';
 import MyGroups from './pages/MyGroups';
-import SearchGroups from './pages/SearchGroups.js';
+import SearchGroup from './pages/SearchGroups';
 import MyIssues from './pages/MyIssues';
 
 
@@ -31,13 +31,15 @@ function App() {
     return (
         <Router >
             <Switch>
-                {/* <div className="page-div"> */}
+                <div className="page-div">
                     <Route path="/" exact>
-                        <div className="login-box">
-                            <div className="logo"></div>
-                            <div className="login-div">
-                                <LoginPage state={state} />
-                                <p className="register-click" onClick={handleClick}>{message}</p>
+                        <div className="page-div2">
+                            <div className="login-box">
+                                <div className="logo"></div>
+                                <div className="login-div">
+                                    <LoginPage state={state} />
+                                    <p className="register-click" onClick={handleClick}>{message}</p>
+                                </div>
                             </div>
                         </div>
                     </Route>
@@ -54,9 +56,9 @@ function App() {
                         <MyGroups /> 
                     </Route>
                     <Route path="/search" exact>
-                        <SearchGroups /> 
+                        <SearchGroup/> 
                     </Route>
-                {/* </div> */}
+                </div>
             </Switch>
         </Router>
     );
