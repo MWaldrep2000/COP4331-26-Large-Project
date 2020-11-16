@@ -8,6 +8,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const MongoClient = require('mongodb').MongoClient;
+
+/***********Put this line in a text file and load from there. also do gitignore on that text file***********************/
+
 const url = 'mongodb+srv://mwaldrep26:mwaldrep@lpcluster.awkzh.mongodb.net/G26_Database?retryWrites=true&w=majority';
 
 const client = new MongoClient(url);
@@ -176,8 +179,9 @@ app.post('/api/createGroup', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
+/**********************EDIT SEARCH GROUP SO THAT CAPITALIZATION DOES NOT MATTER**********************/
 app.post('/api/searchGroup', async (req, res, next) => {
-    // incoming: userId, search
+    // incoming: search
     // outgoing: _ret[], error
 
     //Create empty error variable
@@ -328,8 +332,9 @@ app.post('/api/joinGroup', async (req, res, next) => {
 
         //if we make it here then that means the user is not in the group
         //and we can add a member document to the Member Collection
-        var role = "user"
-        const newMember = {UserID:userID, GroupID:groupID, Role:role};
+        var role = "user";
+        var groupId = ObjectId(groupID);
+        const newMember = {UserID:userID, GroupID:groupId, Role:role};
         const results1 = await db.collection('Member').insertOne(newMember);
         error = "Successfully joined group";
     }
@@ -342,7 +347,43 @@ app.post('/api/joinGroup', async (req, res, next) => {
 });
 
 app.post('/api/createIssue', async (req, res, next) => {
+    //Incoming: memberID, groupID, topic, description, username
+    //Outgoing: 
 
+    //Create error variable
+    var error = "";
+
+    //Get what is being sent over from the frontend
+    const {memberID, groupID, topic, description, username} = req.body;
+
+    //Create the body of what will be added to the Issue Collection
+    const newIssue = {MemberID:memberID, GroupID:groupID, Topic:topic, Description:description, Username:username}
+
+    try{
+        //Connect with the database
+        const db = client.db();
+
+        //Check if document with memberID and groupID exists in the database. if not then we cannot add the issue
+        const results1 = await db.collection('Member').find({"_id":ObjectId(memberID),"GroupID":ObjectId(groupID)}).toArray();
+
+        //if results1.length equal 0 then that means that member with that groupID doesn't exist
+        if (results1.length != 0){
+            error = "No document found with this member and group ID";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+
+        //if results1.length is not 0 then add the newIssue to the Issue collection
+        const result = await db.collection('Issue').insertOne(newIssue);
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    //Return an error if any
+    var ret = {Error:error};
+    res.status(200).json(ret)
 });
 
 app.post('/api/readIssue', async (req, res, next) => {
@@ -358,7 +399,7 @@ app.post('/api/replyToIssue', async (req, res, next) => {
 });
 
 app.post('/api/readReplies', async (req, res, next) => {
-    
+
 });
 
 app.listen(5000);
