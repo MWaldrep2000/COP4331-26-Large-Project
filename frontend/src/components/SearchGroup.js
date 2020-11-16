@@ -15,7 +15,7 @@ function SearchGroup (){
     const SearchGroup = async event => {  
         event.preventDefault();
         // sends groupName and user's id "id", to the API to create an account with user as an admin
-        var obj = {search:searchFor.value};        
+        var obj = {search:searchFor.value};
         var js = JSON.stringify(obj);
         try {
             const response = await fetch('http://localhost:5000/api/searchGroup', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
@@ -63,7 +63,7 @@ function SearchGroup (){
             // Hence the attribute "class" and not "className"
             var tr = document.createElement("tr");
             var groupID = res[i]._id;
-            // tr.setAttribute("id", groupID);
+            tr.setAttribute("id", groupID);
             tr.setAttribute("class", "searchRow");
 
             var td1 = document.createElement("td");

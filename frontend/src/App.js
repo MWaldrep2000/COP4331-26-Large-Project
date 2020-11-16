@@ -5,7 +5,7 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import CreateGroup from './pages/CreateGroup';
 import MyGroups from './pages/MyGroups';
-import SearchGroups from './pages/SearchGroups';
+import SearchGroup from './pages/SearchGroups';
 import MyIssues from './pages/MyIssues';
 
 
@@ -56,7 +56,7 @@ function App() {
                         <MyGroups /> 
                     </Route>
                     <Route path="/search" exact>
-                        <SearchGroups /> 
+                        <SearchGroup/> 
                     </Route>
                 </div>
             </Switch>

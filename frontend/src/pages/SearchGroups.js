@@ -1,13 +1,13 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
-import SearchGroup from '../components/SearchGroup';
+import SrchGrps from '../components/SrchGrps';
 
 const SearchGroups = () => {
     return (
         <div className="fullscreen">
             <NavBar/>
             <div>
-                <SearchGroup/>
+                <SrchGrps/>
             </div>
         </div>
     );
