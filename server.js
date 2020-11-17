@@ -8,6 +8,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const MongoClient = require('mongodb').MongoClient;
+
+/***********Put this line in a text file and load from there. also do gitignore on that text file***********************/
+
 const url = 'mongodb+srv://mwaldrep26:mwaldrep@lpcluster.awkzh.mongodb.net/G26_Database?retryWrites=true&w=majority';
 
 const client = new MongoClient(url);
@@ -177,7 +180,7 @@ app.post('/api/createGroup', async (req, res, next) => {
 });
 
 app.post('/api/searchGroup', async (req, res, next) => {
-    // incoming: userId, search
+    // incoming: search
     // outgoing: _ret[], error
 
     //Create empty error variable
@@ -197,7 +200,7 @@ app.post('/api/searchGroup', async (req, res, next) => {
 
         //any results that show up will go into results
         //each individual index in results will the name of the group as well as the id of that group
-        const results = await db.collection('Group').find({"Name":{$regex:_search+'.*', $options:'r'}}).toArray();
+        const results = await db.collection('Group').find({"Name":{$regex:_search+'.*', $options:'i'}}).toArray();
 
         //have a variable that has the length of the results
         //error contains a message of how many elements there are
@@ -328,8 +331,9 @@ app.post('/api/joinGroup', async (req, res, next) => {
 
         //if we make it here then that means the user is not in the group
         //and we can add a member document to the Member Collection
-        var role = "user"
-        const newMember = {UserID:userID, GroupID:groupID, Role:role};
+        var role = "user";
+        var groupId = ObjectId(groupID);
+        const newMember = {UserID:userID, GroupID:groupId, Role:role};
         const results1 = await db.collection('Member').insertOne(newMember);
         error = "Successfully joined group";
     }
@@ -342,23 +346,204 @@ app.post('/api/joinGroup', async (req, res, next) => {
 });
 
 app.post('/api/createIssue', async (req, res, next) => {
+    //Incoming: memberID, groupID, topic, description, username
+    //Outgoing: 
 
+    //Create error variable
+    var error = "";
+
+    //Get what is being sent over from the frontend
+    const {userID, memberID, groupID, topic, description, username} = req.body;
+
+    //Create the body of what will be added to the Issue Collection
+    const newIssue = {MemberID:memberID, GroupID:groupID, Topic:topic, Description:description, Username:username}
+
+    try{
+        //Connect with the database
+        const db = client.db();
+
+        //Check if document with memberID and groupID exists in the database. if not then we cannot add the issue
+        const results1 = await db.collection('Member').find({"UserID": userID, "GroupID": ObjectId(groupID)}).toArray();
+
+        //if results1.length equal 0 then that means that userID with that groupID doesn't exist
+        if (results1.length == 0){
+            error = "No document found with this userID and group ID";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+
+        //if results1.length is not 0 then add the newIssue to the Issue collection
+        const result = await db.collection('Issue').insertOne(newIssue);
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    //Return an error if any
+    var ret = {Error:error};
+    res.status(200).json(ret)
 });
 
 app.post('/api/readIssue', async (req, res, next) => {
+    //Read all the issues within a specific group
+    //incoming: groupID
+    //outgoing: array with all the issues within a group
+    //Create empty error variable
+    var error = '';
 
+    //create a new variable with the search string
+    var search = "";
+
+    const {groupID} = req.body;
+
+    try{
+        //Connect to the database and try to find any groups
+        const db = client.db();
+
+        //any results that show up will go into results
+        //each individual index in results will the name of the group as well as the id of that group
+        const results = await db.collection('Issue').find({"GroupID":groupID, "Topic":{$regex:search+'.*', $options:'r'}}).toArray();
+
+        
+        //have a variable that has the length of the results
+        //error contains a message of how many elements there are
+        var amount = results.length;
+        error = amount.toString()+" results";
+
+        //for some reason i cant send results so i made an array that
+        //will have the results and thats what will be sent back
+        var _ret = [];
+        for( var i=0; i<results.length; i++ )
+        {
+            _ret.push(results[i]);
+        }
+    }
+    catch(e){
+        error = e.toString()
+    }
+
+    var ret = {Results:_ret, Error:error};
+    res.status(200).json(ret);
 });
 
 app.post('/api/searchIssue', async (req, res, next) => {
+    //Search all the issues within a specific group
+    //incoming: groupID, search
+    //outgoing: array with all the issues within a group
+    //Create empty error variable
+    var error = '';
 
+    const {groupID, search} = req.body;
+
+    //create a new variable with the search string being trimmed down to get rid of whitspace
+    var _search = search.trim();
+
+    try{
+        //Connect to the database and try to find any groups
+        const db = client.db();
+
+        //any results that show up will go into results
+        //each individual index in results will the name of the group as well as the id of that group
+        const results = await db.collection('Issue').find({"GroupID":groupID, "Topic":{$regex:_search+'.*', $options:'i'}}).toArray();
+
+        //if there are no results then return
+        if (results.length == 0){
+            error = "IssueID does not exist"
+            var ret ={Error:error};
+            res.status(200).json(ret);
+        }
+        
+        //have a variable that has the length of the results
+        //error contains a message of how many elements there are
+        var amount = results.length;
+        error = amount.toString()+" results";
+
+        //for some reason i cant send results so i made an array that
+        //will have the results and thats what will be sent back
+        var _ret = [];
+        for( var i=0; i<results.length; i++ )
+        {
+            _ret.push(results[i]);
+        }
+    }
+    catch(e){
+        error = e.toString()
+    }
+
+    var ret = {Results:_ret, Error:error};
+    res.status(200).json(ret);
 });
 
 app.post('/api/replyToIssue', async (req, res, next) => {
+    //Incoming: issueID, reply
+    //Outgoing: 
 
+    //Create error variable
+    var error = "";
+
+    //Get what is being sent over from the frontend
+    const {issueID, reply} = req.body;
+
+    //Create the body of what will be added to the Issue Collection
+    const newReply = {IssueID:issueID, Reply:reply};
+
+    try{
+        //Connect with the database
+        const db = client.db();
+
+        //if results1.length is not 0 then add the newIssue to the Issue collection
+        const result = await db.collection('Reply').insertOne(newReply);
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    //Return an error if any
+    var ret = {Error:error};
+    res.status(200).json(ret)
 });
 
 app.post('/api/readReplies', async (req, res, next) => {
-    
+    //Read all the replies within a given issue
+    //incoming: issueID
+    //outgoing: array with all the issues within a group
+    //Create empty error variable
+    var error = '';
+
+    //create a new variable with the search string
+    var search = "";
+
+    const {issueID} = req.body;
+
+    try{
+        //Connect to the database and try to find any groups
+        const db = client.db();
+
+        //any results that show up will go into results
+        //each individual index in results will have the name IssueID as well as the Reply
+        const results = await db.collection('Reply').find({"IssueID":issueID, "Reply":{$regex:search+'.*', $options:'r'}}).toArray();
+
+        //have a variable that has the length of the results
+        //error contains a message of how many elements there are
+        var amount = results.length;
+        error = amount.toString()+" results";
+
+        //for some reason i cant send results so i made an array that
+        //will have the results and thats what will be sent back
+        var _ret = [];
+        for( var i=0; i<results.length; i++ )
+        {
+            _ret.push(results[i]);
+        }
+
+    }
+    catch(e){
+        error = e.toString()
+    }
+
+    var ret = {Results:_ret, Error:error};
+    res.status(200).json(ret);
 });
 
 app.listen(5000);
