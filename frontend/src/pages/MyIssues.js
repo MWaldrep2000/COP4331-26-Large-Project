@@ -1,13 +1,11 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
-
+import MyIssue from '../components/MyIssue';
 const MyIssues = () => {
     return (
-        <div className="fullscreen">
+        <div>
             <NavBar/>
-            <div>
-                This is the My Issues.
-            </div>
+            <MyIssue />
         </div>
     );
 }
