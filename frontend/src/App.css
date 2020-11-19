@@ -447,3 +447,121 @@ right: 20%; */
 .hpg-group-button:focus {
     outline: none;
 }
+
+.mygroups-div {
+    position: absolute;
+    margin: 2% 10%;
+    left: -100px;
+    /* top: 100px; */
+    width: 40%;
+    height: 70%;
+    /* border: 1px solid #000000; */
+    /* border-radius: 5px; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.mygroup-names {
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 10%;
+    border: 1px solid black;
+    border-radius: 2px;
+    margin: 0 0 10px;
+    box-shadow: 0.01px 0.01px 5px #000000;
+}
+
+.issues-div {
+    position: absolute;
+    /* top: 100px; */
+    margin-top: 1.5%;
+    width: 100%;
+    height: 88%;
+    /* border: 1px solid #000000; */
+    /* border-radius: 5px; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.sidebar {
+    right: -100px;
+    position: absolute;
+    width: 50%;
+    height: 70%;
+    /* border: 1px solid #000000; */
+    border-radius: 5px;
+    margin: 2% 10%;
+    background-color: rgb(255, 248, 248);
+    box-shadow: 0.01px 0.01px 5px #000000;
+}
+
+.post-button {
+    position: absolute;
+    width: 15%;
+    border: 1px solid black;
+    margin: 0 5px 0;
+    margin-top: 1%;
+    height: 70%;
+    margin-left: 40%;
+    border-radius: 20px ;
+    color: green;
+    background-color: #ffffff;
+    font-size: small;
+    float: left;
+}
+
+.table-header {
+    position: relative;
+    background-color: rgb(3, 100, 60);
+    height: 10%;
+}
+
+.group-title{
+    margin-top: 1.5%;
+    margin-left: 2%;
+    float: left;
+    text-overflow: ellipsis;
+    width: 40%;
+    color: white;
+}
+
+.myissue-names {
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 15%;
+    border: 1px solid black;
+    border-radius: 2px;
+    margin: 0 0 10px;
+    box-shadow: 0.01px 0.01px 5px #000000;
+}
+
+.leftMarg {
+    margin-left:1%;
+}
+
+.response-button {
+    position: absolute;
+    width: 15%;
+    height: 10%;
+    right: 0;
+    border: 1px solid black;
+    margin: 0 5px 0;
+    border-radius: 20px ;
+    background-color: #1cd579;
+    font-size: small;
+}
