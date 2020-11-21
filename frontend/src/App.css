@@ -528,3 +528,200 @@ right: 20%; */
 .myissue-button:focus {
     outline: none;
 }
+
+.mygroups-div {
+    position: absolute;
+    margin: 2% 10%;
+    left: -100px;
+    /* top: 100px; */
+    width: 40%;
+    height: 70%;
+    /* border: 1px solid #000000; */
+    /* border-radius: 5px; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.mygroup-names {
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 10%;
+    border: 1px solid black;
+    border-radius: 2px;
+    margin: 0 0 10px;
+    box-shadow: 0.01px 0.01px 5px #000000;
+}
+
+.issues-div {
+    position: absolute;
+    /* top: 100px; */
+    margin-top: 1.5%;
+    width: 100%;
+    height: 88%;
+    /* border: 1px solid #000000; */
+    /* border-radius: 5px; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.sidebar {
+    right: -100px;
+    position: absolute;
+    width: 50%;
+    height: 70%;
+    /* border: 1px solid #000000; */
+    border-radius: 5px;
+    margin: 2% 10%;
+    background-color: rgb(255, 248, 248);
+    box-shadow: 0.01px 0.01px 5px #000000;
+}
+
+.post-button {
+    position: absolute;
+    width: 15%;
+    border: 1px solid black;
+    margin: 0 5px 0;
+    margin-top: 1%;
+    height: 70%;
+    margin-left: 40%;
+    border-radius: 20px ;
+    color: green;
+    background-color: #ffffff;
+    font-size: small;
+    float: left;
+}
+
+.table-header {
+    position: relative;
+    background-color: rgb(3, 100, 60);
+    height: 10%;
+}
+
+.group-title{
+    margin-top: 1.5%;
+    margin-left: 2%;
+    float: left;
+    text-overflow: ellipsis;
+    width: 40%;
+    color: white;
+}
+
+.myissue-names {
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 15%;
+    border: 1px solid black;
+    border-radius: 2px;
+    margin: 0 0 10px;
+    box-shadow: 0.01px 0.01px 5px #000000;
+}
+
+.leftMarg {
+    margin-left:1%;
+}
+
+.response-button {
+    position: absolute;
+    width: 15%;
+    height: 10%;
+    right: 0;
+    border: 1px solid black;
+    margin: 0 5px 0;
+    border-radius: 20px ;
+    background-color: #1cd579;
+    font-size: small;
+}
+
+.post-issue {
+    width: 500px;
+    max-width: 100%;
+    margin: 0 auto;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(168, 255, 214);
+    border-radius: 20px ;
+    padding: 5px;
+    align-content: center;
+    border:1px solid black;
+}
+
+.topic-input {
+    text-align: left;
+    margin: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 5%;
+    border: 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background: #ffffff;
+    width: 80%;
+    height: 34px;
+    margin-left: 10%;
+}
+
+.desc-input {
+    text-align: left;
+    margin: 5px;
+    border: 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background: #ffffff;
+    width: 80%;
+    height: 68px;
+    padding: 3px;
+    margin-left: 10%;
+}
+
+.issue-submit {
+    bottom: 0;
+    width: 40%;
+    height: 5%;
+    margin-left: 30%;
+    border: 1px solid black;
+    border-radius: 5px;
+    background: #81ffd5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.x-button {
+    bottom: 0;
+    width: 5%;
+    height: 5%;
+    margin-left: 95%;
+    border: 1px solid black;
+    border-radius: 100%;
+    background: #81ffd5;
+}
+.post-header{
+    position: relative;
+    width: 100%;
+}
+.dark{
+    position: absolute;
+    bottom: 0%;
+    min-width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+}
