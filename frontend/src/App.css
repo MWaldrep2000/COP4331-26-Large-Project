@@ -16,6 +16,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
 
 .page-div {
@@ -445,6 +446,86 @@ right: 20%; */
 }
 
 .hpg-group-button:focus {
+    outline: none;
+}
+
+.myissue-wrapper { 
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.myissues-div {
+    position: absolute;
+    align-items: center;
+    width: auto;
+    height: 74%;
+    flex-direction: column;
+    overflow: hidden;
+    overflow-y: auto;
+    top: 30px;    
+}
+
+.myissue-name {
+    position: relative;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 700px;
+    height: 150px;
+    border-radius: 2px;
+    margin: 10px 5px 10px;
+    box-shadow: 0.01px 0.01px 5px #000000;
+    
+}
+
+.myissue-topic {
+
+    position: absolute;
+    top: 0;
+    /* border: 1px solid black; */
+    padding: 3px 0 3px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: darkgreen;
+    color: white;
+
+}
+
+.myissue-description {
+
+    /* border: 1px solid black; */
+    padding: 2px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    height: 80%;
+    bottom: 0;
+    
+}
+
+.myissue-button {
+
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    right: 0;
+    bottom: 0;
+    border: 1px solid black;
+    margin: 0 5px 3px;
+    border-radius: 20px ;
+    background-color: #1cd579;
+    font-size: small;
+
+}
+.myissue-button:focus {
     outline: none;
 }
 

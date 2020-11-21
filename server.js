@@ -366,7 +366,7 @@ app.post('/api/createIssue', async (req, res, next) => {
         const results1 = await db.collection('Member').find({"UserID": userID, "GroupID": ObjectId(groupID)}).toArray();
 
         //if results1.length equal 0 then that means that userID with that groupID doesn't exist
-        if (results1.length == 0){
+        if (results1.length  == 0){
             error = "No document found with this userID and group ID";
             var ret = {Error:error};
             res.status(200).json(ret);
@@ -545,5 +545,44 @@ app.post('/api/readReplies', async (req, res, next) => {
     var ret = {Results:_ret, Error:error};
     res.status(200).json(ret);
 });
+
+app.post('/api/readAllIssues', async (req, res, next) => {
+    //Read all the issues a specific user has created within any group. 
+    //incoming: userID
+    //outgoing: array with all the issues
+    //Create empty error variable
+    var error = '';
+    // var groupID = "";
+
+    const {username} = req.body;
+
+    try{
+        //Connect to the database and try to find any groups
+        const db = client.db();
+
+        //any results that show up will go into results
+        //each individual index in results will the name of the group as well as the id of that group
+        const results = await db.collection('Issue').find({"Username":username}).toArray();
+
+        
+        //have a variable that has the length of the results
+        //error contains a message of how many elements there are
+        var amount = results.length;
+        error = amount.toString()+" results";
+
+        var _ret = [];
+        for( var i=0; i<results.length; i++ )
+        {
+            _ret.push(results[i]);
+        }
+    }
+    catch(e){
+        error = e.toString()
+    }
+
+    var ret = {Results:_ret, Error:error};
+    res.status(200).json(ret);
+});
+
 
 app.listen(5000);
