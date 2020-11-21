@@ -21,7 +21,7 @@ function Login() {
                 setMessage('User/Password combination incorrect');            
             } else {      
                 // Temporary user display          
-                var user = {Email:res.Email,ID:res.ID};           
+                var user = {Email:res.Email,ID:res.ID, Username:loginName.value};           
                 localStorage.setItem('user_data', JSON.stringify(user));                
                 setMessage('');               
                 window.location.href = '/home';            

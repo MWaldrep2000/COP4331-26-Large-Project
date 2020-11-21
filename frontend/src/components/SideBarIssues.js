@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
+import PostIssue from './PostIssue';
+
 
 const SideBarIssues = ({state}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [postID, setID] = useState(null);
+    const [postName, setName] = useState(null);
+
+    const closePost = () => {
+        setID(null);
+        setName(null);
+        setIsOpen(false);
+    }
+
+    const openPost = (pid, gname) => {
+        setID(pid);
+        setName(gname);
+        setIsOpen(!isOpen);
+    }
 
     return (
+        <>
         <div className="sidebar">
             <div className="table-header">
                 <p className="group-title"><strong>{state.groupNames}</strong></p>
-                <button className="post-button" id={state.GroupID}><strong>Post</strong></button>
+                <button className="post-button" id={state.GroupID} onClick={() => openPost( state.id,state.groupNames)}><strong>Post</strong></button>
             </div>
             <div className="issues-div">
                 {((typeof state.issues[0]) === "string") ? <p className="leftMarg">{state.issues[0]}</p> : 
@@ -17,7 +35,9 @@ const SideBarIssues = ({state}) => {
                     </span>
                 ))}
             </div>
-        </div> 
+        </div>
+        {isOpen? <PostIssue isOpen={isOpen} gname={postName} pid={postID} close={closePost} /> : null}
+        </>
     );
 };
 
