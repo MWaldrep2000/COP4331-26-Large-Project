@@ -13,9 +13,29 @@ class PostIssue extends Component {
         this.setState({[nam]: val});
     }
 
-    createIssue = (event) => {
+    createIssue = async (event) => {
         event.preventDefault();
-        alert("You are submitting " + this.state.topic + " and " + this.state.description);
+
+        var _ud = localStorage.getItem('user_data');
+        var ud = JSON.parse(_ud);
+        var uid = ud.ID;
+        var uname = ud.Username;
+
+        //const {userID, memberID, groupID, topic, description, username} = req.body;
+        var obj = {userID:uid, memberID:1, groupID: this.props.pid,topic:this.state.topic, description:this.state.description, username: uname };        
+        var js = JSON.stringify(obj);
+
+        try {                
+            const response = await fetch('http://localhost:5000/api/createIssue', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});           
+            var res = JSON.parse(await response.text());
+            if( res.Error !== "" ) {                         
+                alert(res.Error);           
+            }        
+        } catch(e) {            
+            alert(e.toString());            
+            return;        
+        }      
+
         this.props.close();
     }
     
@@ -47,11 +67,28 @@ class PostIssue extends Component {
 
 export default PostIssue;
 
-{/* <div>
-            <form>
-                <input className="form-input" type="text" id="loginName" placeholder="Enter Group Name"   ref={(c) => groupName = c} />
-                <div className="loginButton">
-                    <input type="submit" className="buttons" value="Create Group" onClick={createGroup} />       
-                </div>
-            </form>
-        </div> */}
+// const doLogin = async event => {     
+        
+        
+//     event.preventDefault();        
+//     var obj = {login:loginName.value,password:loginPassword.value};        
+//     var js = JSON.stringify(obj);        
+    
+//     try {                
+//         const response = await fetch('http://localhost:5000/api/login', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}}); 
+//         alert("login success");           
+//         var res = JSON.parse(await response.text());
+//         if( res.Flag <= 0 ) {                
+//             setMessage('User/Password combination incorrect');            
+//         } else {      
+//             // Temporary user display          
+//             var user = {Email:res.Email,ID:res.ID, Username:loginName.value};           
+//             localStorage.setItem('user_data', JSON.stringify(user));                
+//             setMessage('');               
+//             window.location.href = '/home';            
+//         }        
+//     } catch(e) {            
+//         alert(e.toString());            
+//         return;        
+//     }        
+// }; 

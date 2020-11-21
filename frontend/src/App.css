@@ -576,7 +576,7 @@ right: 20%; */
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    background-color: rgb(209, 250, 255);
+    background-color: rgb(168, 255, 214);
     border-radius: 20px ;
     padding: 5px;
     align-content: center;
@@ -618,7 +618,7 @@ right: 20%; */
     margin-left: 30%;
     border: 1px solid black;
     border-radius: 5px;
-    background: #b9e0ff;
+    background: #81ffd5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -631,7 +631,7 @@ right: 20%; */
     margin-left: 95%;
     border: 1px solid black;
     border-radius: 100%;
-    background: #b9e0ff;
+    background: #81ffd5;
 }
 .post-header{
     position: relative;
@@ -639,7 +639,8 @@ right: 20%; */
 }
 .dark{
     position: absolute;
+    bottom: 0%;
     min-width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
 }

@@ -24,13 +24,13 @@ const SideBarIssues = ({state}) => {
         <div className="sidebar">
             <div className="table-header">
                 <p className="group-title"><strong>{state.groupNames}</strong></p>
-                <button className="post-button" id={state.GroupID} onClick={() => openPost( state.id,state.groupNames)}><strong>Post</strong></button>
+                <button className="post-button" id={state.groupID} onClick={() => openPost( state.groupID,state.groupNames)}><strong>Post</strong></button>
             </div>
             <div className="issues-div">
                 {((typeof state.issues[0]) === "string") ? <p className="leftMarg">{state.issues[0]}</p> : 
                 state.issues.map((iss, index) => (
                     <span className="myissue-names">
-                        {iss.Topic}
+                        {iss.Topic} Post by: {iss.Username}
                         <button id={iss.GroupID} className="response-button">See Responses</button>
                     </span>
                 ))}
