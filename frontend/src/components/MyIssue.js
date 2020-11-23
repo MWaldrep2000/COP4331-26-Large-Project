@@ -1,12 +1,13 @@
 import { Component } from "react";
 import React  from 'react';
-
+import MyIssueViewIssue from './MyIssueViewIssue';
 class MyIssue extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             id: [],
+            showIssue: false,
             // MemberID: [],
             // GroupID: [], 
             // Topic: [],
@@ -35,6 +36,40 @@ class MyIssue extends Component {
     
     render() {
         
+        const handleClick = (id) => {
+
+            console.log(id);    
+            this.setState({
+                showIssue: true,
+            })
+            
+            // try {
+            //     var obj = {groupID:id};        
+            //     var js = JSON.stringify(obj); 
+            //     const response = await fetch('http://localhost:5000/api/readIssue', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+            //     var res = JSON.parse(await response.text());
+            //     if(res.Results.length === 0) {
+            //         this.setState({
+            //             issues: ["No Issues Yet."],
+            //             groupNames: gname,
+            //             groupID: id,
+            //         })
+            //     }
+            //     else {
+            //         this.setState({
+            //             issues: res.Results,
+            //             groupNames: gname,
+            //             groupID: id,
+            //         })
+            //     }
+            // } catch(e) {
+            //     alert(e.toString());
+            //     return
+            // }
+        }
+
+
+
         return(
             <div>
                 <div className="myissue-wrapper">
@@ -47,22 +82,19 @@ class MyIssue extends Component {
                                     <div className="myissue-description">
                                         {issue.Description}
                                     </div>
-                                    <button className="myissue-button">View Issue</button>
+                                    <button className="myissue-button" onClick={() => {
+
+                                        handleClick(issue.GroupID)
+                                        
+
+                                    }}>View Issue</button>
                                 </div>
                             ))}
                     </div>
                 </div>
+                {/* <MyIssueViewIssue state={this.state}/> */}
+                {this.state.showIssue === true ? <MyIssueViewIssue /> : null}
             </div>
-
-            // <div className="groups-div">
-            //     {this.state.names.slice(0,6).map((group, index) => (
-            //         <span className="group-names">
-            //             {group.Name}
-            //             <button id={group._id} className="hpg-group-button" onClick={() => handleClick(group._id)}>Join Group</button>
-            //         </span>
-                    
-            //         ))}
-            // </div>
         );
     }
 }
