@@ -8,11 +8,11 @@ class MyIssue extends Component {
         this.state = {
             id: [],
             showIssue: false,
-            // MemberID: [],
-            // GroupID: [], 
-            // Topic: [],
-            // Description: [],
-            // Username: [], 
+            GroupID: "",
+            Topic: "",
+            Description: "",
+            Poster: "",
+            Replies: [],
         }
     }    
     
@@ -36,38 +36,43 @@ class MyIssue extends Component {
     
     render() {
         
-        const handleClick = (id) => {
+        const handleClick = (groupinfo) => {
 
-            console.log(id);    
+
+           findReplies(groupinfo._id);
+            if(groupinfo === 0) {
+                this.setState({
+                    showIssue: !this.state.showIssue,
+                })
+            } else  
             this.setState({
-                showIssue: true,
+                showIssue: !this.state.showIssue,
+                GroupID: groupinfo.GroupID,
+                Topic: groupinfo.Topic,
+                Description: groupinfo.Description,
+                Poster: groupinfo.Username,
             })
+            console.log(this.state);   
             
-            // try {
-            //     var obj = {groupID:id};        
-            //     var js = JSON.stringify(obj); 
-            //     const response = await fetch('http://localhost:5000/api/readIssue', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
-            //     var res = JSON.parse(await response.text());
-            //     if(res.Results.length === 0) {
-            //         this.setState({
-            //             issues: ["No Issues Yet."],
-            //             groupNames: gname,
-            //             groupID: id,
-            //         })
-            //     }
-            //     else {
-            //         this.setState({
-            //             issues: res.Results,
-            //             groupNames: gname,
-            //             groupID: id,
-            //         })
-            //     }
-            // } catch(e) {
-            //     alert(e.toString());
-            //     return
-            // }
         }
 
+        const findReplies = async (issueId) => {
+            try {
+                var obj = {issueID:issueId};        
+                var js = JSON.stringify(obj); 
+                const response = await fetch('http://localhost:5000/api/readReplies', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                var res = JSON.parse(await response.text());
+                this.setState({
+                    Replies: res.Results,
+                })
+          
+            } catch(e) {
+                alert(e.toString());
+                return
+            }
+
+            console.log(res.Results);
+        }
 
 
         return(
@@ -84,7 +89,7 @@ class MyIssue extends Component {
                                     </div>
                                     <button className="myissue-button" onClick={() => {
 
-                                        handleClick(issue.GroupID)
+                                        handleClick(issue)
                                         
 
                                     }}>View Issue</button>
@@ -92,8 +97,35 @@ class MyIssue extends Component {
                             ))}
                     </div>
                 </div>
-                {/* <MyIssueViewIssue state={this.state}/> */}
-                {this.state.showIssue === true ? <MyIssueViewIssue /> : null}
+                {this.state.showIssue === true ?
+                
+                    <div className="dark myissue-viewissue-bg" >
+                        <div className="myissue-viewissue-div">
+                            <div className="myissue-viewissue-closebutton" onClick={ () => {handleClick(0)}}></div>
+                            <div className="myissue-viewissue-issuewrapper">
+                                <div className="myissue-viewissue-groupid"> {this.state.Topic} </div>
+                                <div className="myissue-viewissue-issueinformation">
+                                    <div className="myissue-viewissue-poster"> Posted by: {this.state.Poster} </div>
+                                    {/* <div className="myissue-viewissue-topic"> Topic: {this.state.Topic} </div> */}
+                                    <div className="myissue-viewissue-description">Description: {this.state.Description} </div>
+                                </div>
+                                <div className="myissue-viewissue-issuereplies">
+                                    {this.state.Replies.map((reply, index) => (
+                                        
+                                        <div className="myissue-viewissue-reply">
+                                            <div className="myissue-viewissue-author">{reply.Author}</div>
+                                            <div className="myissue-viewissue-response">{reply.Reply}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                
+                    : null}
+
+
             </div>
         );
     }

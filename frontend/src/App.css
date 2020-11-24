@@ -725,3 +725,104 @@ right: 20%; */
     min-height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
 }
+.myissue-viewissue-bg {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.myissue-viewissue-div {
+
+    position: relative;
+    width: 600px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+}
+.myissue-viewissue-closebutton {
+    position: absolute;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background-image: url(./logoImages/close.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin: 3px 3px 0 0;
+    z-index: 10;
+}
+.myissue-viewissue-issuewrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+.myissue-viewissue-issueinformation {
+    position: relative;
+    width: 100%;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    
+    
+}
+
+.myissue-viewissue-issuereplies {
+
+    position: relative;
+    /* display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;  */
+    width: 100%;
+    overflow-y: scroll;
+    overflow: hidden;
+    padding: 10px;
+
+
+}
+
+.myissue-viewissue-groupid {
+    width: 100%;
+    height: 40px;
+    background-color: darkgreen;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid black;
+    color: white;
+
+}
+.myissue-viewissue-poster {
+    
+}
+
+.myissue-viewissue-topic {
+
+}
+.myissue-viewissue-description {
+
+}
+
+.myissue-viewissue-reply {
+    width: 99%;
+    background-color: #1cd579;
+    margin: 3px;
+    border: 1px solid black;
+    box-shadow: 0.01px 0.01px 3px #000000;
+
+}
+
+.myissue-viewissue-author {
+
+}
+
+.myissue-viewissue-response {
+   
+}
