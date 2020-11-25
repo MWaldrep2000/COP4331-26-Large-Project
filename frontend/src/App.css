@@ -667,6 +667,7 @@ right: 20%; */
     padding: 5px;
     align-content: center;
     border:1px solid black;
+    color: black;
 }
 
 .topic-input {
@@ -805,14 +806,14 @@ right: 20%; */
 
 }
 .myissue-viewissue-poster {
-    
+    color: black;
 }
 
 .myissue-viewissue-topic {
 
 }
 .myissue-viewissue-description {
-
+    color: black;
 }
 
 .myissue-viewissue-reply {
