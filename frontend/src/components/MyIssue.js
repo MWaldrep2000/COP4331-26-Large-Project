@@ -18,12 +18,25 @@ class MyIssue extends Component {
     
     async componentWillMount() {
 
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
+
         var _un = localStorage.getItem('user_data');
         var un = JSON.parse(_un);
         var uname = un.Username;
         var obj = {username : uname};     
         var js = JSON.stringify(obj);  
-        const response = await fetch('http://localhost:5000/api/readAllIssues', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        const response = await fetch(buildPath('api/readAllIssues'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         var res = JSON.parse(await response.text());
         // var issueList = [];
         // issueList = res.Results;
@@ -57,10 +70,23 @@ class MyIssue extends Component {
         }
 
         const findReplies = async (issueId) => {
+
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
             try {
                 var obj = {issueID:issueId};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch('http://localhost:5000/api/readReplies', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     Replies: res.Results,

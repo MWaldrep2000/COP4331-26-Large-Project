@@ -3,7 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
 
+
+const path = require('path');
+const PORT = process.env.PORT || 5000;
 const app = express();
+
+app.set('port', (process.env.PORT || 5000));
+
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -11,10 +17,32 @@ const MongoClient = require('mongodb').MongoClient;
 
 /***********Put this line in a text file and load from there. also do gitignore on that text file***********************/
 
-const url = 'mongodb+srv://mwaldrep26:mwaldrep@lpcluster.awkzh.mongodb.net/G26_Database?retryWrites=true&w=majority';
+//const url = 'mongodb+srv://mwaldrep26:mwaldrep@lpcluster.awkzh.mongodb.net/G26_Database?retryWrites=true&w=majority';
 
+//const client = new MongoClient(url);
+//client.connect();
+
+require('dotenv').config();
+const url = process.env.MONGODB_URL;
 const client = new MongoClient(url);
 client.connect();
+
+
+///////////////////////////////////////////////////
+// For Heroku deployment
+
+// Server static assets if in production
+if (process.env.NODE_ENV === 'production') 
+{
+  // Set static folder
+  app.use(express.static('frontend/build'));
+
+  app.get('*', (req, res) => 
+ {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+  });
+}
+
 
 app.use((req, res, next) => {  
     res.setHeader('Access-Control-Allow-Origin', '*');  
@@ -23,7 +51,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.listen(5000); // start Node + Express server on port 5000
+// MAYBE UNCOMMENT IF STUFF BREAKS
+// app.listen(5000); // start Node + Express server on port 5000
 
 app.post('/api/login', async (req, res, next) => 
 {
@@ -620,4 +649,8 @@ app.post('/api/changePassword', async (req, res, next) => {
     //Change the password to the account
     //Input: Username
 });
-app.listen(5000);
+
+app.listen(PORT, () =>
+{
+    console.log(`Server listening on port ${PORT}.`);
+});

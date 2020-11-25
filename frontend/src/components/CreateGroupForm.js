@@ -10,7 +10,19 @@ function CreateGroupForm (){
 
     const [message, setMessage] = useState('');
 
-    const createGroup = async event => {     
+    const createGroup = async event => {
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
         
         event.preventDefault();
         // sends groupName and user's id "id", to the API to create an account with user as an admin
@@ -20,7 +32,7 @@ function CreateGroupForm (){
         alert(js);
         try {             
             alert("inside try block");   
-            const response = await fetch('http://localhost:5000/api/createGroup', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            const response = await fetch(buildPath('api/createGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             alert("response received");        
             var res = JSON.parse(await response.text());
             alert("finished call");

@@ -8,13 +8,26 @@ function Login() {
 
     const doLogin = async event => {     
         
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
+
         
         event.preventDefault();        
         var obj = {login:loginName.value,password:loginPassword.value};        
         var js = JSON.stringify(obj);        
         
         try {                
-            const response = await fetch('http://localhost:5000/api/login', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}}); 
+            const response = await fetch(buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}}); 
             alert("login success");           
             var res = JSON.parse(await response.text());
             if( res.Flag <= 0 ) {                
