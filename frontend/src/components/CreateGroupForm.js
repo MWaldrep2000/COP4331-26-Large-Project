@@ -28,19 +28,19 @@ function CreateGroupForm (){
         // sends groupName and user's id "id", to the API to create an account with user as an admin
         var obj = {userID:id,groupname:groupName.value};        
         var js = JSON.stringify(obj);        
-        alert("inside func");
-        alert(js);
+        // alert("inside func");
+        // alert(js);
         try {             
-            alert("inside try block");   
+            // alert("inside try block");   
             const response = await fetch(buildPath('api/createGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-            alert("response received");        
+            // alert("response received");        
             var res = JSON.parse(await response.text());
-            alert("finished call");
-            alert(res);
+            // alert("finished call");
+            //alert(res);
             if (res.Error === "Group already Exists") {
                 alert("error"); 
             } else {                
-                alert("group created?");
+                // alert("group created?");
                 window.location.href = '/home';  
             }
                 

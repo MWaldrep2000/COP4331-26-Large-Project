@@ -86,7 +86,7 @@ class MyIssue extends Component {
             try {
                 var obj = {issueID:issueId};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch(buildPath('readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     Replies: res.Results,

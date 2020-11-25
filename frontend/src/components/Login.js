@@ -27,8 +27,7 @@ function Login() {
         var js = JSON.stringify(obj);        
         
         try {                
-            const response = await fetch(buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}}); 
-            alert("login success");           
+            const response = await fetch(buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});        
             var res = JSON.parse(await response.text());
             if( res.Flag <= 0 ) {                
                 setMessage('User/Password combination incorrect');            
