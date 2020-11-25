@@ -474,6 +474,7 @@ right: 20%; */
 .myissue-name {
     position: relative;
     background: white;
+    color: black;
     display: flex;
     justify-content: center;
     align-items: center;
