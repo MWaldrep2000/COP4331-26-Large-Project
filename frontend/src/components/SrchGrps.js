@@ -32,7 +32,7 @@ function SrchGrps (){
         var obj = {search:searchFor.value};
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPAth('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+            const response = await fetch(buildPath('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
             var res = JSON.parse(await response.text());
             var searchRes = res.Results;
             if (searchRes.length === 0) {
