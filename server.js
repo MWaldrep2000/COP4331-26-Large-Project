@@ -476,17 +476,17 @@ app.post('/api/searchIssue', async (req, res, next) => {
 });
 
 app.post('/api/replyToIssue', async (req, res, next) => {
-    //Incoming: issueID, reply
+    //Incoming: issueID, reply, username
     //Outgoing: 
 
     //Create error variable
     var error = "";
 
     //Get what is being sent over from the frontend
-    const {issueID, reply} = req.body;
+    const {issueID, reply, username} = req.body;
 
     //Create the body of what will be added to the Issue Collection
-    const newReply = {IssueID:issueID, Reply:reply};
+    const newReply = {IssueID:issueID, Reply:reply, Author:username};
 
     try{
         //Connect with the database
@@ -584,5 +584,40 @@ app.post('/api/readAllIssues', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
+app.post('/api/checkUsername', async (req, res, next) => {
+    //Check to see if the email provided is registered to a user
+    //Input: email
+    //Output: error if any
 
+    //Create empty error variable
+    var error = '';
+
+    const {username} = req.body;
+
+    try{
+         //Connect to the database and try to find any groups
+         const db = client.db();
+
+         //any results that show up will go into results
+         //Look for any documents in the User collection that have the same email
+         const results = await db.collection('User').find({"Username":username}).toArray();
+
+         if (results.length == 0){
+            error = "Username not found";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+         }
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    var ret = {Error:error};
+    res.status(200).json(ret);
+});
+app.post('/api/changePassword', async (req, res, next) => {
+    //Change the password to the account
+    //Input: Username
+});
 app.listen(5000);
