@@ -726,20 +726,34 @@ right: 20%; */
     background-color: rgba(0, 0, 0, 0.8);
 }
 .myissue-viewissue-bg {
+
     position: absolute;
+    width: 600px;
+    height: 800px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
 
 }
+.dark2{
+    position: absolute;
+    min-width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
 .myissue-viewissue-div {
-
-    position: relative;
+    position: absolute;
+    bottom: 0;
     width: 600px;
     height: 800px;
     display: flex;
     justify-content: center;
     background-color: white;
+    
 }
 .myissue-viewissue-closebutton {
     position: absolute;
@@ -784,7 +798,7 @@ right: 20%; */
     overflow-y: scroll;
     overflow: hidden;
     padding: 10px;
-
+    
 
 }
 
@@ -825,4 +839,13 @@ right: 20%; */
 
 .myissue-viewissue-response {
    
+}
+
+.myissue-viewissue-div {
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+
 }
