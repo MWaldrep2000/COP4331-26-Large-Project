@@ -403,6 +403,7 @@ right: 20%; */
     border-radius: 15px;
     width: 70%;
     border: 1px solid #000000;
+    color: black;
 }
 
 .joinButton {
@@ -430,6 +431,7 @@ right: 20%; */
     border-radius: 2px;
     margin: 0 0 10px;
     box-shadow: 0.01px 0.01px 5px #000000;
+    color: black;
 
 }
 
@@ -472,6 +474,7 @@ right: 20%; */
 .myissue-name {
     position: relative;
     background: white;
+    color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -549,6 +552,7 @@ right: 20%; */
 .mygroup-names {
     background: white;
     display: flex;
+    color: black;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -619,6 +623,7 @@ right: 20%; */
 }
 
 .myissue-names {
+    color: black;
     background: white;
     display: flex;
     justify-content: center;
@@ -634,7 +639,7 @@ right: 20%; */
 .leftMarg {
     margin-left:1%;
 }
-
+ 
 .response-button {
     position: absolute;
     width: 15%;
@@ -662,6 +667,7 @@ right: 20%; */
     padding: 5px;
     align-content: center;
     border:1px solid black;
+    color: black;
 }
 
 .topic-input {
@@ -814,14 +820,14 @@ right: 20%; */
 
 }
 .myissue-viewissue-poster {
-    
+    color: black;
 }
 
 .myissue-viewissue-topic {
 
 }
 .myissue-viewissue-description {
-
+    color: black;
 }
 
 .myissue-viewissue-reply {

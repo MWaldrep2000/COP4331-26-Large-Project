@@ -24,11 +24,25 @@ class JoinedGroups extends Component {
     }
 
     async componentWillMount() {
+
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
+
         var _ud = localStorage.getItem('user_data');
         var ud = JSON.parse(_ud);
         var obj = {flag:1, userID:ud.ID};        
         var js = JSON.stringify(obj);  
-        const response = await fetch('http://localhost:5000/api/readGroup', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        const response = await fetch(buildPath('api/readGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         var res = JSON.parse(await response.text());
         var groupNames = [];
         groupNames = res.Results;
@@ -51,10 +65,23 @@ class JoinedGroups extends Component {
         var uid = ud.ID;
 
         const handleClick = async (id, gname) => {
+
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
             try {
                 var obj = {groupID:id};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch('http://localhost:5000/api/readIssue', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
                 var res = JSON.parse(await response.text());
                 if(res.Results.length === 0) {
                     this.setState({
