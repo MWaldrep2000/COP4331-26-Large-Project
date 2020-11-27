@@ -106,9 +106,6 @@ app.post('/api/register', async (req, res, next) => {
     //which is username, password and email
     const { username, password, email } = req.body;  
 
-    //create the body for a new user to add to the Users collection
-    //We dont need to add an ID since MongoDB seems to do that for us
-    const newUser = {Username:username, Password:password, Validated:validated, Email:email,};
     try
     {
         //Connect with the database
@@ -137,6 +134,27 @@ app.post('/api/register', async (req, res, next) => {
             res.status(200).json(ret);
             return;
         }
+
+        validationCode = Math.random().toString(36).substring(2, 12).toUpperCase();
+        emailMsg = 'Thank you for creating an account with Hivemind! Now that you have created your account, the next step is to ';
+        emailMsg += 'validate your account. To do so, just enter the following code in the validation page.';
+        emailMsg += '<br><br>Validation code: ' + validationCode;
+
+        const sgMail = require('@sendgrid/mail');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        var message = "<strong>Test message<br>Hopefully it works</strong>"
+        const msg = {
+            to: email, // Change to your recipient
+            from: 'Hivemind.Incorportated@gmail.com', // Change to your verified sender
+            subject: 'Email Validation',
+            text: 'and easy to do anywhere, even with Node.js',
+            html: emailMs + "<br><br>Thank you<br>Hivemind Team"
+        };
+        sgMail.send(msg);
+        
+        //create the body for a new user to add to the Users collection
+        //We dont need to add an ID since MongoDB seems to do that for us
+        const newUser = {Username:username, Password:password, Validated:validated, Email:email,};
 
         //if neither the username or email is taken, then we
         //can add the new user
@@ -648,6 +666,66 @@ app.post('/api/checkUsername', async (req, res, next) => {
 app.post('/api/changePassword', async (req, res, next) => {
     //Change the password to the account
     //Input: Username
+});
+
+app.post('/api/validateCode', async (req, res, next) => {
+    //Check to see if validation code for account is correct
+    //Incoming: userID or username (something i can search the user with), validationcode
+    //Outgoing: Error
+
+    //create empty error variable
+    var error = "";
+
+    const {userID,username,validationcode} = req.body;
+
+    const filter = {Username:username};
+
+    try{
+        //Connect to the database and try to find any groups
+        const db = client.db();
+
+        //any results that show up will go into results
+        //Look for any documents in the User collection that have the same email
+        const results = await db.collection('User').find({"Username":username}).toArray();
+
+        //if no user is found
+        if (results.length == 0){
+            error = "User not found";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+        
+        else{
+            //if the code does not match
+            if (results[0].Code != validationcode){
+                error = "Incorrect validation code";
+                var ret = {Error:error};
+                res.status(200).json(ret);
+                return;
+            }
+            else{
+                //if we're here that means that the user was found and the code matches
+                error = "Validation success";
+
+/***************Here we need to update the users account with validation = 1 ****************************/
+
+                const updateDoc = {
+                    $set: {
+                        Validated:
+                            1,
+                    },
+                }
+                const results1 = await db.collection('User').updateOne(filter, updateDoc);
+            }
+        }
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    var ret = {Error:error};
+    res.status(200).json(ret);
 });
 
 app.listen(PORT, () =>
