@@ -53,7 +53,7 @@ const SideBarIssues = ({state}) => {
             </div>
         </div>
         {isOpen? <PostIssue isOpen={isOpen} gname={postName} pid={postID} close={closePost} /> : null}
-        {showIssue? <ViewResponse showIssue={showIssue} issue={currIssue} refresh={true} close={closeResponse} jankReload={reloader}/> : null}
+        {showIssue? <ViewResponse showIssue={showIssue} issue={currIssue} setIssue={setIssue} refresh={true} close={closeResponse} jankReload={reloader}/> : null}
         </>
     );
 };

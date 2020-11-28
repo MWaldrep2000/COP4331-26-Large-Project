@@ -44,8 +44,13 @@ class ViewResponse extends Component {
     render() {  
 
         const handleClick = () => {
+            if(this.state.ReplyToSend.length === 0){
+                return; 
+            }
             sendReply();
-            this.props.jankReload();
+            document.getElementById("reply").value = "";
+            this.setState({ReplyToSend:""});
+            findReplies(this.props.issue._id);
         }
 
         const sendReply = async () => {
@@ -63,13 +68,14 @@ class ViewResponse extends Component {
             }
     
             //event.preventDefault();
-    
+            
             var _ud = localStorage.getItem('user_data');
             var ud = JSON.parse(_ud);
             var uid = ud.ID;
             var uname = ud.Username;
     
             var obj = {issueID:this.props.issue._id, reply:this.state.ReplyToSend, username: uname};        
+
             var js = JSON.stringify(obj);
     
             try {                
@@ -82,6 +88,34 @@ class ViewResponse extends Component {
                 alert(e.toString());            
                 return;        
             }      
+        }
+        const findReplies = async (issueId) => {
+
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
+            try {
+                var obj = {issueID:issueId};        
+                var js = JSON.stringify(obj); 
+                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                var res = JSON.parse(await response.text());
+                this.setState({
+                    Replies: res.Results,
+                })
+          
+            } catch(e) {
+                alert(e.toString());
+                return
+            }
         }
 
 
