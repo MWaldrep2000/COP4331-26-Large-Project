@@ -49,7 +49,7 @@ function Register() {
     return (
         <div id="registerDiv">
 
-            <form className="register-form" onSubmit={ doCreation }>
+            <form className="register-form">
                 <input className="form-input" type="text" id="username" placeholder="Username"   ref={(c) => createUsername = c} />
                 <input className="form-input" type="text" id="email" placeholder="Email"  ref={(c) => createEmail = c}/>
                 <input className="form-input" type="password" id="password" placeholder="Password"   ref={(c) => createPassword = c} />
