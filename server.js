@@ -148,13 +148,13 @@ app.post('/api/register', async (req, res, next) => {
             from: 'Hivemind.Incorportated@gmail.com', // Change to your verified sender
             subject: 'Email Validation',
             text: 'and easy to do anywhere, even with Node.js',
-            html: emailMs + "<br><br>Thank you<br>Hivemind Team"
+            html: emailMsg + "<br><br>Thank you<br>Hivemind Team"
         };
         sgMail.send(msg);
         
         //create the body for a new user to add to the Users collection
         //We dont need to add an ID since MongoDB seems to do that for us
-        const newUser = {Username:username, Password:password, Validated:validated, Email:email,};
+        const newUser = {Username:username, Password:password, Validated:validated, Email:email, Code:validationCode};
 
         //if neither the username or email is taken, then we
         //can add the new user

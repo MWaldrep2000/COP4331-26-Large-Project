@@ -7,6 +7,7 @@ import CreateGroup from './pages/CreateGroup';
 import MyGroups from './pages/MyGroups';
 import SearchGroup from './pages/SearchGroups';
 import MyIssues from './pages/MyIssues';
+import Validate from './pages/Validate';
 
 
 
@@ -57,6 +58,9 @@ function App() {
                     </Route>
                     <Route path="/search" exact>
                         <SearchGroup/> 
+                    </Route>
+                    <Route path="/validate" exact>
+                        <Validate/> 
                     </Route>
                 </div>
             </Switch>
