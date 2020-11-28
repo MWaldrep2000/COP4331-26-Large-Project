@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import PostIssue from './PostIssue';
-
+import ViewResponse from './ViewResponse';
 
 const SideBarIssues = ({state}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [postID, setID] = useState(null);
     const [postName, setName] = useState(null);
+    const [currIssue, setIssue] = useState(null);
+    const [showIssue, setShowIssue] = useState(false);
+    const [reload, setReload] = useState(false);
 
+    const reloader = () => {
+        setReload(!reload);
+    }
     const closePost = () => {
         setID(null);
         setName(null);
@@ -17,6 +23,16 @@ const SideBarIssues = ({state}) => {
         setID(pid);
         setName(gname);
         setIsOpen(!isOpen);
+    }
+
+    const seeResponses = (issue) => {
+        setIssue(issue);
+        setShowIssue(!showIssue);
+    }
+
+    const closeResponse = () => {
+        setIssue(null);
+        setShowIssue(!showIssue);
     }
 
     return (
@@ -31,12 +47,13 @@ const SideBarIssues = ({state}) => {
                 state.issues.map((iss, index) => (
                     <span className="myissue-names">
                         {iss.Topic} Post by: {iss.Username}
-                        <button id={iss.GroupID} className="response-button">See Responses</button>
+                        <button id={iss.GroupID} className="response-button" onClick={() => seeResponses( iss )}>See Responses</button>
                     </span>
                 ))}
             </div>
         </div>
         {isOpen? <PostIssue isOpen={isOpen} gname={postName} pid={postID} close={closePost} /> : null}
+        {showIssue? <ViewResponse showIssue={showIssue} issue={currIssue} refresh={true} close={closeResponse} jankReload={reloader}/> : null}
         </>
     );
 };

@@ -468,7 +468,8 @@ right: 20%; */
     flex-direction: column;
     overflow: hidden;
     overflow-y: auto;
-    top: 30px;    
+    top: 30px;   
+    padding-right:15px; 
 }
 
 .myissue-name {
@@ -740,9 +741,10 @@ right: 20%; */
 }
 .myissue-viewissue-div {
 
-    position: relative;
+    position: absolute;
+    top: 15%;
     width: 600px;
-    height: 800px;
+    height: 80%;
     display: flex;
     justify-content: center;
     background-color: white;
@@ -831,4 +833,32 @@ right: 20%; */
 
 .myissue-viewissue-response {
    
+}
+
+.reply-button {
+    position: absolute;
+    width: 15%;
+    height: 5%;
+    border: 1px solid black;
+    border-radius: 5px ;
+    background-color: #155535;
+    color: white;
+    font-size: small;
+    right: 3%;
+    bottom: 3%;
+}
+
+.reply-input {
+    text-align: left;
+    position: absolute;
+    border: 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background: #ffffff;
+    width: 75%;
+    height: 15%;
+    padding: 3px;
+    bottom: 3%;
+    left: 3%;
+    resize: none;
 }
