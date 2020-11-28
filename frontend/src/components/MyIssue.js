@@ -13,17 +13,38 @@ class MyIssue extends Component {
             Description: "",
             Poster: "",
             Replies: [],
+            ReplyToSend: '',
+            IssueID: 0,
+            refresh: true,
         }
     }    
     
+    myChangeHandler = (event) => {
+        this.setState({ReplyToSend: event.target.value});
+    }
+
+
     async componentWillMount() {
+
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
 
         var _un = localStorage.getItem('user_data');
         var un = JSON.parse(_un);
         var uname = un.Username;
         var obj = {username : uname};     
         var js = JSON.stringify(obj);  
-        const response = await fetch('http://localhost:5000/api/readAllIssues', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        const response = await fetch(buildPath('api/readAllIssues'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         var res = JSON.parse(await response.text());
         // var issueList = [];
         // issueList = res.Results;
@@ -35,9 +56,49 @@ class MyIssue extends Component {
     
     
     render() {
+
+        const handleRClick = () => {
+            sendReply();
+            this.setState({refresh: !this.state.refresh});
+        }
+
+        const sendReply = async () => {
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
+    
+            //event.preventDefault();
+    
+            var _ud = localStorage.getItem('user_data');
+            var ud = JSON.parse(_ud);
+            var uid = ud.ID;
+            var uname = ud.Username;
+    
+            var obj = {issueID:this.state.IssueID, reply:this.state.ReplyToSend, username: uname};        
+            var js = JSON.stringify(obj);
+    
+            try {                
+                const response = await fetch(buildPath('api/replyToIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});           
+                var res = JSON.parse(await response.text());
+                if( res.Error !== "" ) {                         
+                    alert(res.Error);           
+                }        
+            } catch(e) {            
+                alert(e.toString());            
+                return;        
+            }      
+        }
         
         const handleClick = (groupinfo) => {
-
 
            findReplies(groupinfo._id);
             if(groupinfo === 0) {
@@ -51,16 +112,30 @@ class MyIssue extends Component {
                 Topic: groupinfo.Topic,
                 Description: groupinfo.Description,
                 Poster: groupinfo.Username,
+                IssueID: groupinfo._id,
             })
             console.log(this.state);   
             
         }
 
         const findReplies = async (issueId) => {
+
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
             try {
                 var obj = {issueID:issueId};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch('http://localhost:5000/api/readReplies', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     Replies: res.Results,
@@ -98,8 +173,7 @@ class MyIssue extends Component {
                     </div>
                 </div>
                 {this.state.showIssue === true ?
-                    <div className="dark2">
-                        <div className="myissue-viewissue-bg" >
+                    <div className="dark myissue-viewissue-bg">
                             <div className="myissue-viewissue-div">
                                 <div className="myissue-viewissue-closebutton" onClick={ () => {handleClick(0)}}></div>
                                 <div className="myissue-viewissue-issuewrapper">
@@ -119,7 +193,8 @@ class MyIssue extends Component {
                                         ))}
                                     </div>
                                 </div>
-                            </div>
+                            <textarea className="reply-input" type="text" id="reply" name="replyBox" onChange={this.myChangeHandler}  />
+                            <button className="reply-button" onClick={() => handleRClick()}>Reply</button>
                         </div>
                     </div>
                 

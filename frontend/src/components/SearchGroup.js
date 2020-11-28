@@ -12,13 +12,26 @@ function SearchGroup (){
     const [groupList,setGroupList] = useState('');
 
 
-    const SearchGroup = async event => {  
+    const SearchGroup = async event => {
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
+
         event.preventDefault();
         // sends groupName and user's id "id", to the API to create an account with user as an admin
         var obj = {search:searchFor.value};
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch('http://localhost:5000/api/searchGroup', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+            const response = await fetch(buildPath('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
             var res = JSON.parse(await response.text());
             var searchRes = res.Results;
             if (searchRes.length === 0) {

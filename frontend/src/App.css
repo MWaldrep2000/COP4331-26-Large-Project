@@ -403,6 +403,7 @@ right: 20%; */
     border-radius: 15px;
     width: 70%;
     border: 1px solid #000000;
+    color: black;
 }
 
 .joinButton {
@@ -430,6 +431,7 @@ right: 20%; */
     border-radius: 2px;
     margin: 0 0 10px;
     box-shadow: 0.01px 0.01px 5px #000000;
+    color: black;
 
 }
 
@@ -466,12 +468,14 @@ right: 20%; */
     flex-direction: column;
     overflow: hidden;
     overflow-y: auto;
-    top: 30px;    
+    top: 30px;   
+    padding-right:15px; 
 }
 
 .myissue-name {
     position: relative;
     background: white;
+    color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -549,6 +553,7 @@ right: 20%; */
 .mygroup-names {
     background: white;
     display: flex;
+    color: black;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -619,6 +624,7 @@ right: 20%; */
 }
 
 .myissue-names {
+    color: black;
     background: white;
     display: flex;
     justify-content: center;
@@ -634,7 +640,7 @@ right: 20%; */
 .leftMarg {
     margin-left:1%;
 }
-
+ 
 .response-button {
     position: absolute;
     width: 15%;
@@ -662,6 +668,7 @@ right: 20%; */
     padding: 5px;
     align-content: center;
     border:1px solid black;
+    color: black;
 }
 
 .topic-input {
@@ -726,34 +733,21 @@ right: 20%; */
     background-color: rgba(0, 0, 0, 0.8);
 }
 .myissue-viewissue-bg {
-
     position: absolute;
-    width: 600px;
-    height: 800px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.8);
 
 }
-.dark2{
-    position: absolute;
-    min-width: 100%;
-    min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    padding: 30px;
-}
 .myissue-viewissue-div {
+
     position: absolute;
-    bottom: 0;
+    top: 15%;
     width: 600px;
-    height: 800px;
+    height: 80%;
     display: flex;
     justify-content: center;
     background-color: white;
-    
 }
 .myissue-viewissue-closebutton {
     position: absolute;
@@ -798,7 +792,7 @@ right: 20%; */
     overflow-y: scroll;
     overflow: hidden;
     padding: 10px;
-    
+
 
 }
 
@@ -814,14 +808,14 @@ right: 20%; */
 
 }
 .myissue-viewissue-poster {
-    
+    color: black;
 }
 
 .myissue-viewissue-topic {
 
 }
 .myissue-viewissue-description {
-
+    color: black;
 }
 
 .myissue-viewissue-reply {
@@ -841,11 +835,31 @@ right: 20%; */
    
 }
 
-.myissue-viewissue-div {
 
+.reply-button {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    
+    width: 15%;
+    height: 5%;
+    border: 1px solid black;
+    border-radius: 5px ;
+    background-color: #155535;
+    color: white;
+    font-size: small;
+    right: 3%;
+    bottom: 3%;
+}
 
+.reply-input {
+    text-align: left;
+    position: absolute;
+    border: 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background: #ffffff;
+    width: 75%;
+    height: 15%;
+    padding: 3px;
+    bottom: 3%;
+    left: 3%;
+    resize: none;
 }

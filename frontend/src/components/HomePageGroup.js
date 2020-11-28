@@ -12,10 +12,22 @@ class HomePageGroup extends Component {
     }
 
     async componentWillMount() {
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
 
         var obj = {flag:0, userID:0};        
         var js = JSON.stringify(obj);  
-        const response = await fetch('http://localhost:5000/api/readGroup', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        const response = await fetch(buildPath('api/readGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
         var res = JSON.parse(await response.text());
         var groupNames = [];
         groupNames = res.Results;
@@ -37,10 +49,22 @@ class HomePageGroup extends Component {
         var uid = ud.ID;
 
         const handleClick = async (id) => {
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
             var obj = {userID:uid,groupID:id};
             var js = JSON.stringify(obj);
             try {
-                const response = await fetch('http://localhost:5000/api/joinGroup', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/joinGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
                 var res = JSON.parse(await response.text());
     
                 if (res.Error === "User is already in this group")

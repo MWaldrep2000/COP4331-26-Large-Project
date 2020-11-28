@@ -5,7 +5,20 @@ function Register() {
 
     const [message, setMessage] = useState('');
 
-    const doCreation = async event => {     
+    const doCreation = async event => {
+        const app_name = 'hivemindg26';
+        function buildPath(route)
+        {
+            if (process.env.NODE_ENV === 'production') 
+            {
+                return 'https://' + app_name +  '.herokuapp.com/' + route;
+            }
+            else
+            {        
+                return 'http://localhost:5000/' + route;
+            }
+        }
+
         if (createPassword.value !== confirmPassword.value) {
             alert("passwords dont match");
             return;
@@ -17,7 +30,7 @@ function Register() {
         var js = JSON.stringify(obj);        
         
         try {                
-            const response = await fetch('http://localhost:5000/api/register', {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});            
+            const response = await fetch(buildPath('api/register'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});            
             var res = JSON.parse(await response.text());
             
             if (res.Error !== "Registration Complete") {
@@ -36,7 +49,7 @@ function Register() {
     return (
         <div id="registerDiv">
 
-            <form className="register-form" onSubmit={ doCreation }>
+            <form className="register-form">
                 <input className="form-input" type="text" id="username" placeholder="Username"   ref={(c) => createUsername = c} />
                 <input className="form-input" type="text" id="email" placeholder="Email"  ref={(c) => createEmail = c}/>
                 <input className="form-input" type="password" id="password" placeholder="Password"   ref={(c) => createPassword = c} />
