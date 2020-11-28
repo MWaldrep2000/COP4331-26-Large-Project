@@ -51,11 +51,11 @@ function CreateGroupForm (){
     };
 
     return (
-        <div>
+        <div className="searchWrapper">
             <form>
-                <input className="form-input" type="text" id="loginName" placeholder="Enter Group Name"   ref={(c) => groupName = c} />
-                <div className="loginButton">
-                    <input type="submit" className="buttons" value="Create Group" onClick={createGroup} />       
+                <input className="search-input" type="text" id="loginName" placeholder="Enter Group Name"   ref={(c) => groupName = c} />
+                <div>
+                    <input type="submit" className="searchButton" value="Create Group" onClick={createGroup} />       
                 </div>
             </form>
         </div>

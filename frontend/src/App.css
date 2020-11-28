@@ -863,3 +863,25 @@ right: 20%; */
     left: 3%;
     resize: none;
 }
+
+.verif-input {
+    text-align: center;
+    margin: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 1px solid;
+    outline: none;
+    border-radius: 5px;
+    background: #32C96E;
+    width: 20%;
+    height: 34px;
+}
+
+.verifButton {
+    position: relative;
+    top: 20px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

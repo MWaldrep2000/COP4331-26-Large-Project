@@ -21,17 +21,19 @@ function Login() {
             }
         }
 
-        
         event.preventDefault();        
         var obj = {login:loginName.value,password:loginPassword.value};        
         var js = JSON.stringify(obj);        
         
-        try {                
+        try {               
             const response = await fetch(buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});        
             var res = JSON.parse(await response.text());
             if( res.Flag <= 0 ) {                
                 setMessage('User/Password combination incorrect');            
-            } else {      
+            } else if(res.Validated === 0) {            
+                setMessage('');               
+                window.location.href = '/validate'; 
+            } else {     
                 // Temporary user display          
                 var user = {Email:res.Email,ID:res.ID, Username:loginName.value};           
                 localStorage.setItem('user_data', JSON.stringify(user));                
