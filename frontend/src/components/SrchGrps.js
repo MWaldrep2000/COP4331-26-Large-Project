@@ -9,7 +9,7 @@ function SrchGrps (){
     var gid;
     var searchResults = [];
     const [state, setState] = useState(searchResults);
-    //const [message, setMessage] = useState('DEFAULT');
+    const [message, setMessage] = useState('');
 
 
     const SearchGroup = async event => {  
@@ -36,12 +36,12 @@ function SrchGrps (){
             var res = JSON.parse(await response.text());
             var searchRes = res.Results;
             if (searchRes.length === 0) {
-                alert("no groups found"); 
+                setMessage("No groups found."); 
             } else {   
                 searchResults = searchRes;
+                setMessage("");
             }
             setState(searchResults);
-            // setMessage("search is done");
                 
         } catch(e) {            
             alert(e.toString());            
@@ -74,7 +74,7 @@ function SrchGrps (){
 
             if (res.Error === "User is already in this group")
             {
-                alert(res.Error);
+                document.getElementById(gid).style = "background-color: grey";
             }
         } catch(e) {
             alert(e.toString());
@@ -100,6 +100,7 @@ function SrchGrps (){
             </div> 
             {/* <p id="groupList">{groupList}</p><br /><br /> */}
             <div className="fullSearch">
+            <span id="searchResult" className="search-error">{message}</span>
                 <table id="SearchResult" className="searchyTable">
                     <tbody>
                         {state.map((group) => (

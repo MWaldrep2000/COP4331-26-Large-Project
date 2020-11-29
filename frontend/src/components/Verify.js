@@ -46,7 +46,7 @@ function Verify() {
     return (    
         <div>
             <form className="login-form" onSubmit={ doVerification }>
-                Please check your email for your Verification Code.
+                <span style={{color: "black"}}>Please check your email for your Verification Code.</span>
                 <hr/>
                 <input className="verif-input" type="text" id="loginName" placeholder="Username"   ref={(c) => loginName = c} />
                 <input className="verif-input" type="test" id="verifCode" placeholder="Verification"   ref={(c) => verifCode = c} />

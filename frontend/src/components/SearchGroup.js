@@ -121,6 +121,7 @@ function SearchGroup (){
             <div className="fullSearch">
                 <table id="SearchResult" className="searchyTable"></table>
             </div>
+            
         </div>
     );
 

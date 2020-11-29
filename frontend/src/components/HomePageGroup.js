@@ -69,7 +69,7 @@ class HomePageGroup extends Component {
     
                 if (res.Error === "User is already in this group")
                 {
-                    alert(res.Error);
+                    document.getElementById(id).style = "background-color: grey";
                 }
             } catch(e) {
                 alert(e.toString());

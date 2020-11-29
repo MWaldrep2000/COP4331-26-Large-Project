@@ -38,9 +38,9 @@ function CreateGroupForm (){
             // alert("finished call");
             //alert(res);
             if (res.Error === "Group already Exists") {
-                alert("error"); 
+                setMessage("Group already exists."); 
             } else {                
-                // alert("group created?");
+                setMessage('');
                 window.location.href = '/home';  
             }
                 
@@ -51,6 +51,7 @@ function CreateGroupForm (){
     };
 
     return (
+        <>
         <div className="searchWrapper">
             <form>
                 <input className="search-input" type="text" id="loginName" placeholder="Enter Group Name"   ref={(c) => groupName = c} />
@@ -59,6 +60,8 @@ function CreateGroupForm (){
                 </div>
             </form>
         </div>
+        <span id="searchResult" className="search-error">{message}</span>
+        </>
     );
 
 };

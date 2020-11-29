@@ -885,3 +885,23 @@ right: 20%; */
     justify-content: center;
     align-items: center;
 }
+
+.login-error {
+    color: rgb(155, 0, 0);
+    position: absolute;
+    bottom: 12%;
+    left: 23%;
+}
+
+.register-error {
+    color: rgb(155, 0, 0);
+    position: absolute;
+    bottom: -10%;
+    text-align: center;
+}
+.search-error {
+    color: rgb(155, 0, 0);
+    position: absolute;
+    left: 50%;
+    text-align: center;
+}
