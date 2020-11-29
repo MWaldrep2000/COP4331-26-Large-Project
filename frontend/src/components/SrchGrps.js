@@ -10,6 +10,7 @@ function SrchGrps (){
     var searchResults = [];
     const [state, setState] = useState(searchResults);
     const [message, setMessage] = useState('');
+    const [jMessage, setJMessage] = useState('');
 
 
     const SearchGroup = async event => {  
@@ -74,7 +75,11 @@ function SrchGrps (){
 
             if (res.Error === "User is already in this group")
             {
-                document.getElementById(gid).style = "background-color: grey";
+                document.getElementById(gid).style = "background-color: grey; cursor:not-allowed";
+                setJMessage("User is already in this group");
+            }
+            else{
+                setJMessage("");
             }
         } catch(e) {
             alert(e.toString());
@@ -89,6 +94,7 @@ function SrchGrps (){
 
     return (
         <div state={state}>
+            <span id="joinResult" className="join-error">{jMessage}</span>
             <div className="searchWrapper">
                  <form>
                      <input type="text" className="search-input" id="searching" placeholder="Search Group" ref={(c) => searchFor = c } />

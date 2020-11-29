@@ -905,3 +905,19 @@ right: 20%; */
     left: 50%;
     text-align: center;
 }
+
+.join-error {
+    color: rgb(155, 0, 0);
+    position: absolute;
+    left: 70%;
+    top: 15%;
+    text-align: center;
+}
+
+.join-error2 {
+    color: rgb(155, 0, 0);
+    position: absolute;
+    left: 35%;
+    bottom: -5%;
+    text-align: center;
+}
