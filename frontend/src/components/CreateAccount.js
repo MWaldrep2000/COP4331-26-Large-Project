@@ -18,31 +18,33 @@ function Register() {
                 return 'http://localhost:5000/' + route;
             }
         }
-
-        if (createPassword.value !== confirmPassword.value) {
-            alert("passwords dont match");
-            return;
-        }
         
         event.preventDefault();        
         //once API is created, change "login" and "password" to their respective names
         var obj = {username:createUsername.value,password:createPassword.value,email:createEmail.value};        
         var js = JSON.stringify(obj);        
         
-        try {                
-            const response = await fetch(buildPath('api/register'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});            
-            var res = JSON.parse(await response.text());
-            
-            if (res.Error !== "Registration Complete") {
-                setMessage(res.Error); 
-            } else {                
-                setMessage(res.Error);               
-                window.location.href = '/';
-            }
+        if (createPassword.value !== confirmPassword.value) {
+            setMessage("Passwords don't match.");
+            return;
+        } 
+        else
+        {
+            try {                
+                const response = await fetch(buildPath('api/register'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});            
+                var res = JSON.parse(await response.text());
                 
-        } catch(e) {            
-            alert(e.toString());            
-            return;        
+                if (res.Error !== "Registration Complete") {
+                    setMessage(res.Error); 
+                } else {                
+                    setMessage(res.Error);               
+                    window.location.href = '/';
+                }
+                    
+            } catch(e) {            
+                alert(e.toString());            
+                return;        
+            }
         }        
     }; 
 
@@ -57,6 +59,7 @@ function Register() {
                 <div className="registerButton">
                     <input className="buttons" type="submit" id="loginButton" class="buttons" value="Create Account" onClick={doCreation} />       
                 </div>
+                <span id="registerResult" className="register-error">{message}</span>
             </form>
         </div>
     );

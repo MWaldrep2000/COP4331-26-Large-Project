@@ -8,6 +8,7 @@ class HomePageGroup extends Component {
         super(props);
         this.state = {
             names: [],
+            joinMessage: '',
         }
     }
 
@@ -69,7 +70,16 @@ class HomePageGroup extends Component {
     
                 if (res.Error === "User is already in this group")
                 {
-                    alert(res.Error);
+                    document.getElementById(id).style = "background-color: grey; cursor:not-allowed";
+                    this.setState({
+                        joinMessage: res.Error,
+                    })
+                }
+                else
+                {
+                    this.setState({
+                        joinMessage: '',
+                    })
                 }
             } catch(e) {
                 alert(e.toString());
@@ -86,6 +96,7 @@ class HomePageGroup extends Component {
                     </span>
                     
                     ))}
+                <span id="joinResult" className="join-error2">{this.state.joinMessage}</span>
             </div>
         );
     }

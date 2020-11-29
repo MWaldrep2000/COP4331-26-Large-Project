@@ -9,6 +9,7 @@ const SideBarIssues = ({state}) => {
     const [currIssue, setIssue] = useState(null);
     const [showIssue, setShowIssue] = useState(false);
     const [reload, setReload] = useState(false);
+    const [message, setMessage] = useState('');
 
     const reloader = () => {
         setReload(!reload);
@@ -20,9 +21,17 @@ const SideBarIssues = ({state}) => {
     }
 
     const openPost = (pid, gname) => {
-        setID(pid);
-        setName(gname);
-        setIsOpen(!isOpen);
+        if( pid === 0 )
+        {
+            setMessage("Please select a group before posting.");
+        }
+        else
+        {
+            setMessage("");
+            setID(pid);
+            setName(gname);
+            setIsOpen(!isOpen);
+        }
     }
 
     const seeResponses = (issue) => {
@@ -37,6 +46,7 @@ const SideBarIssues = ({state}) => {
 
     return (
         <>
+        <span id="searchResult" className="search-error">{message}</span>
         <div className="sidebar">
             <div className="table-header">
                 <p className="group-title"><strong>{state.groupNames}</strong></p>

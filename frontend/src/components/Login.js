@@ -56,6 +56,7 @@ function Login() {
                     <input type="submit" className="buttons" value="Login" onClick={doLogin} />       
                 </div>
             </form>
+            <span id="loginResult" className="login-error">{message}</span>
         </div>
     );
 };
