@@ -3,12 +3,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:startup_namer/User.dart';
 import 'package:startup_namer/loginResults.dart';
 import 'package:startup_namer/Register.dart';
+import 'package:startup_namer/pages/CreateGroup.dart';
 import 'package:startup_namer/pages/CreateUser.dart';
 import 'package:startup_namer/pages/Login.dart';
 import 'package:startup_namer/pages/PasswordRecovery.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -32,7 +34,7 @@ class _LoginState extends State<Login> {
   // }
 
   User tempUser = new User("","");
-
+  final LocalStorage storage = new LocalStorage('data');
   Future<loginResults> _futureloginResults;
   loginResults currentUser;
 
@@ -40,6 +42,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -144,6 +147,15 @@ class _LoginState extends State<Login> {
                             _futureloginResults.then((currentUser) {
                               print("The future is holding data");
                               print(currentUser.flag);
+                              storage.setItem('ID', currentUser.id);
+                              storage.setItem('Validated', currentUser.validated);
+                              storage.setItem('Flag', currentUser.flag);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreateGroup()),
+                              );
+                              // var id = storage.getItem('ID');
+                              // print(id);
                             });
                           },
                           shape: RoundedRectangleBorder(
