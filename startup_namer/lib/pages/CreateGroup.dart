@@ -47,6 +47,7 @@ class _CreateGroupState extends State<CreateGroup> {
               );
             },
           ),
+          backgroundColor: Colors.teal,
         ),
         body: Center(
           child: Container(
