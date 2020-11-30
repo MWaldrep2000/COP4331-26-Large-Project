@@ -921,3 +921,10 @@ right: 20%; */
     bottom: -5%;
     text-align: center;
 }
+
+.reset-error {
+    color: black;
+    position: absolute;
+    bottom: 25%;
+    text-align: center;
+}

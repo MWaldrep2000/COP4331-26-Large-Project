@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch, useParams } from 'react-router-dom';
 import './App.css';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -8,7 +8,8 @@ import MyGroups from './pages/MyGroups';
 import SearchGroup from './pages/SearchGroups';
 import MyIssues from './pages/MyIssues';
 import Validate from './pages/Validate';
-
+import ForgotPassword from './pages/ForgotPassword';
+import Recovery from './pages/Recovery';
 
 
 function App() {
@@ -61,6 +62,12 @@ function App() {
                     </Route>
                     <Route path="/validate" exact>
                         <Validate/> 
+                    </Route>
+                    <Route path="/resetPassword" exact>
+                        <ForgotPassword/> 
+                    </Route>
+                    <Route path="/recovery/:uid">
+                        <Recovery/> 
                     </Route>
                 </div>
             </Switch>
