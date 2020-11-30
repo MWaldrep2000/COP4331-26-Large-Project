@@ -12,15 +12,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import 'package:startup_namer/verify.dart';
 
-import 'Verification.dart';
 
-class Login extends StatefulWidget {
+class Verification extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _VerificationState createState() => _VerificationState();
 }
 
-class _LoginState extends State<Login> {
+class _VerificationState extends State<Verification> {
 
   final firstController = TextEditingController();
 
@@ -36,10 +36,11 @@ class _LoginState extends State<Login> {
   //   _futureloginResults = fetchloginResults("", "");
   // }
 
-  User tempUser = new User("","");
+  String tempUser;
+  String validationCode;
   final LocalStorage storage = new LocalStorage('data');
-  Future<loginResults> _futureloginResults;
-  loginResults currentUser;
+  Future<verify> _futureverifyResults;
+  verify verificationResults;
 
   var token;
 
@@ -76,17 +77,16 @@ class _LoginState extends State<Login> {
                       // ),
                       Container(
                         child: Text(
-                          'Welcome to Hivemind',
+                          'Verify Account',
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
                             fontSize: 32,
                             color: Colors.green,
-                            letterSpacing: 3,
+                            letterSpacing: 2,
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 120),
+                        padding: const EdgeInsets.only(top: 60),
                         child: Container(
                           width: 350,
                           height: 50,
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                             controller: firstController,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
-                                labelText: 'Login',
+                                labelText: 'Enter Username',
                                 labelStyle: TextStyle(
                                     color: Colors.black
                                 ),
@@ -107,13 +107,13 @@ class _LoginState extends State<Login> {
                                 EdgeInsets.only(left: 15, bottom: 18, top: 11, right: 15)
                             ),
                             onChanged: (temp) {
-                              tempUser.login = temp;
+                              tempUser = temp;
                             },
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
+                        padding: const EdgeInsets.only(top: 40.0),
                         child: Container(
                           width: 350,
                           height: 50,
@@ -122,10 +122,9 @@ class _LoginState extends State<Login> {
                               borderRadius: BorderRadius.all(Radius.circular(20))
                           ),
                           child: TextFormField(
-                            obscureText: true,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
-                                labelText: 'Password',
+                                labelText: 'Enter Verification Code',
                                 labelStyle: TextStyle(
                                     color: Colors.black
                                 ),
@@ -134,7 +133,7 @@ class _LoginState extends State<Login> {
                                 EdgeInsets.only(left: 15, bottom: 18, top: 11, right: 15)
                             ),
                             onChanged: (temp) {
-                              tempUser.password = temp;
+                              validationCode = temp;
                             },
                           ),
                         ),
@@ -148,25 +147,19 @@ class _LoginState extends State<Login> {
                         child: RaisedButton(
                           elevation: 5.0,
                           onPressed: () {
-                            _futureloginResults = fetchloginResults(tempUser.login, tempUser.password);
-                            _futureloginResults.then((currentUser) {
+                            _futureverifyResults = fetchverify(tempUser, validationCode);
+                            _futureverifyResults.then((verificationResults) {
                               print("The future is holding data");
-                              print(currentUser.flag);
-                              storage.setItem('ID', currentUser.id);
-                              storage.setItem('Validated', currentUser.validated);
-                              storage.setItem('Flag', currentUser.flag);
 
-                              if (currentUser.validated == 1) {
+                              if (verificationResults.error == "Validation success") {
+                                Fluttertoast.showToast(msg: verificationResults.error);
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(builder: (context) => HomePage()),
                                 );
                               }
                               else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Verification()),
-                                );
+                                Fluttertoast.showToast(msg: verificationResults.error);
                               }
                               // var id = storage.getItem('ID');
                               // print(id);
@@ -177,50 +170,10 @@ class _LoginState extends State<Login> {
                           ),
                           color: Colors.white,
                           child: Text(
-                            'LOGIN',
+                            'VERIFY',
                             style: TextStyle(
                               color: Colors.teal[400],
                               letterSpacing: 6,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        width: double.infinity,
-                        child: FlatButton(
-                          onPressed: () {
-                            // print('New User Button Pressed'),
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CreateUser()),
-                            );
-                          },
-                          padding: EdgeInsets.only(right: 40.0),
-                          child: Text(
-                            'New User?',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: FlatButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PasswordRecover()),
-                            );
-                          },
-                          padding: EdgeInsets.only(right: 40.0),
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
