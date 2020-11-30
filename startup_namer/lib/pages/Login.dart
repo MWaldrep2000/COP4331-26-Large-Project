@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                               storage.setItem('ID', currentUser.id);
                               storage.setItem('Validated', currentUser.validated);
                               storage.setItem('Flag', currentUser.flag);
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(builder: (context) => CreateGroup()),
                               );

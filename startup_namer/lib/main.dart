@@ -8,6 +8,7 @@ import 'package:startup_namer/loginResults.dart';
 import 'package:startup_namer/Register.dart';
 import 'package:startup_namer/pages/CreateUser.dart';
 import 'package:startup_namer/pages/Login.dart';
+import 'package:startup_namer/pages/AddGroup.dart';
 import 'package:startup_namer/pages/PasswordRecovery.dart';
 import 'User.dart';
 import 'dart:async';
@@ -19,6 +20,6 @@ import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
-      home: Login()
+      home: AddGroup()
   ));
 }
