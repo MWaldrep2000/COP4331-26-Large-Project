@@ -5,6 +5,7 @@ import 'package:startup_namer/loginResults.dart';
 import 'package:startup_namer/Register.dart';
 import 'package:startup_namer/pages/CreateGroup.dart';
 import 'package:startup_namer/pages/CreateUser.dart';
+import 'package:startup_namer/pages/HomePage.dart';
 import 'package:startup_namer/pages/Login.dart';
 import 'package:startup_namer/pages/PasswordRecovery.dart';
 import 'dart:async';
@@ -75,8 +76,10 @@ class _LoginState extends State<Login> {
                         child: Text(
                           'Welcome to Hivemind',
                           style: TextStyle(
-                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
                             color: Colors.green,
+                            letterSpacing: 3,
                           ),
                         ),
                       ),
@@ -152,7 +155,7 @@ class _LoginState extends State<Login> {
                               storage.setItem('Flag', currentUser.flag);
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => CreateGroup()),
+                                MaterialPageRoute(builder: (context) => HomePage()),
                               );
                               // var id = storage.getItem('ID');
                               // print(id);

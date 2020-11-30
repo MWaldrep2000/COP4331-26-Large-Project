@@ -20,6 +20,6 @@ import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
-      home: AddGroup()
+      home: Login()
   ));
 }

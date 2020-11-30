@@ -4,6 +4,7 @@ import 'package:startup_namer/User.dart';
 import 'package:startup_namer/loginResults.dart';
 import 'package:startup_namer/Register.dart';
 import 'package:startup_namer/pages/CreateUser.dart';
+import 'package:startup_namer/pages/HomePage.dart';
 import 'package:startup_namer/pages/Login.dart';
 import 'package:startup_namer/pages/PasswordRecovery.dart';
 import 'dart:async';
@@ -19,12 +20,13 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  @override
 
   Future<createGroupResults> _futurecreateGroupResults;
   createGroupResults currentUser;
   final LocalStorage storage = new LocalStorage('data');
   var groupName = '';
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
 
@@ -37,13 +39,29 @@ class _CreateGroupState extends State<CreateGroup> {
         },
       child: Scaffold(
         appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                  Icons.assignment_return,
+                  color: Colors.white
+              ),
+              onPressed: () {
+                storage.clear();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login())
+                );
+              },
+            ),
+          ],
           leading: IconButton(
             alignment: Alignment.center,
             icon: const Icon(Icons.arrow_back),
             onPressed: (){
+              storage.clear();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             },
           ),

@@ -5,6 +5,7 @@ import 'package:startup_namer/User.dart';
 import 'package:startup_namer/loginResults.dart';
 import 'package:startup_namer/Register.dart';
 import 'package:startup_namer/pages/CreateUser.dart';
+import 'package:startup_namer/pages/HomePage.dart';
 import 'package:startup_namer/pages/Login.dart';
 import 'package:startup_namer/getGroups.dart';
 import 'package:startup_namer/joinGroup.dart';
@@ -57,13 +58,14 @@ class _AddGroupState extends State<AddGroup> {
     },
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.teal,
             leading: IconButton(
                 alignment: Alignment.center,
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Login()),
+                    MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 }
             ),
@@ -74,7 +76,8 @@ class _AddGroupState extends State<AddGroup> {
                   color: Colors.white
                 ),
                 onPressed: () {
-                  Navigator.push(
+                  storage.clear();
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => Login())
                   );
@@ -109,7 +112,7 @@ class _AddGroupState extends State<AddGroup> {
                           color: Color.fromRGBO(0xFF, 0xFF, 0xFF, 150.0),
                           borderRadius: BorderRadius.all(Radius.circular(20))
                       ),
-                      child: TextFormField(
+                      child: TextField(
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: 'Search Groups',
@@ -166,55 +169,54 @@ class _AddGroupState extends State<AddGroup> {
                             List<Widget> children;
                             if (snapshot.connectionState == ConnectionState.done && searchString.length == 0) {
                               List<Widget> cardWidgets = [];
-
-                              // print ()
-                              for (int i = 0; i < snapshot.data[0].groupList.length; i++) {
-                                cardWidgets.add(Card(
-                                    margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Row(
-                                        children: <Widget> [
-                                          Container(
-                                            width: 200,
-                                            child: Text(
-                                              snapshot.data[0].groupList[i]['Name'],
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(left:20)
-                                          ),
-                                          RaisedButton(
-                                            elevation: 5.0,
-                                            onPressed: () {
-                                              print(snapshot.data[1].groupList[i]['_id']);
-                                              _getJoinGroupResults = fetchJoinResults(storage.getItem('ID'), snapshot.data[0].groupList[i]['_id']);
-                                              _getJoinGroupResults.then((JoinGroupResult){
-                                                print("hahahahahahaha");
-                                                print(storage.getItem('ID'));
-                                                print(snapshot.data[0].groupList[i]['_id']);
-                                                Fluttertoast.showToast(msg: JoinGroupResult.error);
-                                              });
-                                            },
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
-                                            ),
-                                            color: Colors.tealAccent,
-                                            child: Text(
-                                              'Join Group',
-                                              style: TextStyle(
-                                                color: Colors.teal[400],
-                                                letterSpacing: 2,
+                              if(snapshot.data != null){
+                                for (int i = 0; i < snapshot.data[0].groupList.length; i++) {
+                                  cardWidgets.add(Card(
+                                      margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Row(
+                                          children: <Widget> [
+                                            Container(
+                                              width: 200,
+                                              child: Text(
+                                                snapshot.data[0].groupList[i]['Name'],
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
-                                          )
-                                        ]
-                                      ),
-                                    )
-                                ));
+                                            Padding(
+                                              padding: EdgeInsets.only(left:20)
+                                            ),
+                                            RaisedButton(
+                                              elevation: 5.0,
+                                              onPressed: () {
+                                                print(snapshot.data[1].groupList[i]['_id']);
+                                                _getJoinGroupResults = fetchJoinResults(storage.getItem('ID'), snapshot.data[0].groupList[i]['_id']);
+                                                _getJoinGroupResults.then((JoinGroupResult){
+                                                  print("hahahahahahaha");
+                                                  print(storage.getItem('ID'));
+                                                  print(snapshot.data[0].groupList[i]['_id']);
+                                                  Fluttertoast.showToast(msg: JoinGroupResult.error);
+                                                });
+                                              },
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              color: Colors.tealAccent,
+                                              child: Text(
+                                                'Join Group',
+                                                style: TextStyle(
+                                                  color: Colors.teal[400],
+                                                  letterSpacing: 2,
+                                                ),
+                                              ),
+                                            )
+                                          ]
+                                        ),
+                                      )
+                                  ));
+                                }
                               }
-
                               children = cardWidgets;
                             }
 
@@ -273,7 +275,7 @@ class _AddGroupState extends State<AddGroup> {
 
                             else {
                               print('woahahhahaha');
-                              print(currentGroups.groupList);
+                              // print(currentGroups.groupList);
                               children = <Widget>[
                                 SizedBox(
                                   child: CircularProgressIndicator(),
