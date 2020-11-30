@@ -773,6 +773,77 @@ app.post('/api/validateCode', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
+app.post('/api/deleteGroup', async (req, res, next) => {
+    //Incoming: userID, groupID
+    //Outgoing: error, if any
+
+    //create empty error variable
+    var error = "";
+
+    const {userID,groupID} = req.body;
+
+    var _search = groupID.trim();
+    try{
+        //Connect to the database
+        const db = client.db();
+
+        //any results that show up will go into results
+        //Look for any documents in the Member collection that have the same UserID and GroupID
+        const results = await db.collection('Member').find({"UserID":userID,"GroupID":ObjectId(groupID)}).toArray();
+
+        if (results.length == 0){
+            error = "Could not find member";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+        else if (results[0].Role != "admin"){
+            error = "This user does not have the correct permission to delete this group";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+        else{
+            // //if we're here that means the member was found and they're an admin
+            //Now we need to start deleting the group
+            var deletedItem = await db.collection('Group').deleteMany({_id:ObjectId(groupID)});
+
+            error = "Deleted " +deletedItem.deletedCount+ " group(s)";
+
+            //next we can delete the members
+            deletedItem = await db.collection('Member').deleteMany({GroupID:ObjectId(groupID)});
+
+            error += ", " +deletedItem.deletedCount+ " member(s)";
+
+            //Before we delete the issues we need to first find them all to delete the replies
+            const results1 = await db.collection('Issue').find({"GroupID":{$regex:groupID+'.*', $options:'r'}}).toArray();
+
+            //if results.length != 0 then we know there are issues we need to delete and maybe some replies too
+            if (results1.length != 0){
+                var deletedReplies = 0;
+                var id;
+                for (var i=0; i < results1.length; i++){
+                    id = results1[i]._id;
+                    
+                    deletedItem = await db.collection('Reply').deleteMany({IssueID:ObjectId(id).toString()});
+                    deletedReplies += deletedItem.deletedCount;
+                }
+                //Now we have deleted all of the replies so we can now delete the issues
+                deletedItem = await db.collection('Issue').deleteMany({GroupID:groupID});
+
+                error += ", " +deletedItem.deletedCount+ " issues(s), and " +deletedReplies+ " replies";
+            }
+
+        }
+
+    }
+    catch(e){
+        error = e.toString();
+    }
+    var ret = {Error:error};
+    res.status(200).json(ret);
+});
+
 app.listen(PORT, () =>
 {
     console.log(`Server listening on port ${PORT}.`);
