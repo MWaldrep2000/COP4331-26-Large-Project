@@ -14,6 +14,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'AddGroup.dart';
+import 'MyGroups.dart';
 
 
 
@@ -86,10 +87,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: RaisedButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => MyGroups()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyGroups()),
+                        );
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)
