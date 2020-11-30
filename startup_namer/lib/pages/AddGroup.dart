@@ -185,7 +185,7 @@ class _AddGroupState extends State<AddGroup> {
                                               ),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left:20)
+                                              padding: EdgeInsets.only(left:10)
                                             ),
                                             RaisedButton(
                                               elevation: 5.0,
@@ -238,7 +238,7 @@ class _AddGroupState extends State<AddGroup> {
                                               ),
                                             ),
                                             Padding(
-                                                padding: EdgeInsets.only(left:20)
+                                                padding: EdgeInsets.only(left:10)
                                             ),
                                             RaisedButton(
                                               elevation: 5.0,
