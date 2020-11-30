@@ -86,64 +86,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddGroup()),
-                        );
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)
-                      ),
-                      color: Colors.greenAccent,
-                      child: Text(
-                          'Add Group',
-                        style: TextStyle(
-                          fontSize: 30
-                        ),
-
-                      ),
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 20)),
-
-                  Container(
-                    width: 360,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                    ),
-                    child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CreateGroup()),
-                        );
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)
-                      ),
-                      color: Colors.greenAccent,
-                      child: Text(
-                        'Create Group',
-                        style: TextStyle(
-                            fontSize: 30
-                        ),
-
-                      ),
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.only(top: 20)),
-
-                  Container(
-                    width: 360,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                    ),
-                    child: RaisedButton(
-                      onPressed: () {
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(builder: (context) => MyGroups()),
@@ -154,9 +96,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       color: Colors.greenAccent,
                       child: Text(
-                        'My Groups',
+                          'My Groups',
                         style: TextStyle(
-                            fontSize: 30
+                          fontSize: 30
                         ),
 
                       ),
@@ -184,6 +126,64 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.greenAccent,
                       child: Text(
                         'My Issues',
+                        style: TextStyle(
+                            fontSize: 30
+                        ),
+
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 20)),
+
+                  Container(
+                    width: 360,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AddGroup()),
+                        );
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      ),
+                      color: Colors.greenAccent,
+                      child: Text(
+                        'Search Groups',
+                        style: TextStyle(
+                            fontSize: 30
+                        ),
+
+                      ),
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 20)),
+
+                  Container(
+                    width: 360,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CreateGroup()),
+                        );
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)
+                      ),
+                      color: Colors.greenAccent,
+                      child: Text(
+                        'Create Group',
                         style: TextStyle(
                             fontSize: 30
                         ),
