@@ -631,41 +631,88 @@ app.post('/api/readAllIssues', async (req, res, next) => {
     res.status(200).json(ret);
 });
 
-app.post('/api/checkUsername', async (req, res, next) => {
-    //Check to see if the email provided is registered to a user
+app.post('/api/resetPasswordLink', async (req, res, next) => {
+    //Change the password to the account
     //Input: email
     //Output: error if any
 
-    //Create empty error variable
-    var error = '';
+    //create empty error variable
+    var error = "";
 
-    const {username} = req.body;
+    const {email} = req.body;
 
     try{
-         //Connect to the database and try to find any groups
-         const db = client.db();
+        //Connect with the database
+        const db = client.db();
 
-         //any results that show up will go into results
-         //Look for any documents in the User collection that have the same email
-         const results = await db.collection('User').find({"Username":username}).toArray();
+        //find the user using the email provided
+        const results = await db.collection('User').find({Email:email}).toArray();
 
-         if (results.length == 0){
-            error = "Username not found";
+        //if no user is found
+        if (results.length == 0){
+            error = "User not found";
             var ret = {Error:error};
             res.status(200).json(ret);
             return;
-         }
-    }
+        }
+
+        else{
+            emailMsg = 'Hello ' + email + '<br><br>';
+            emailMsg += 'Someone has requested to reset your password. If this was not you then please delete this email.<br><br>';
+            emailMsg += 'If you would like to reset your password, then click the link below which will take you to our website.';
+            emailMsg += '<br><br>Link: <a href = https://hivemindg26.herokuapp.com/recovery/' + results[0]._id + '>';
+            emailMsg += 'https://hivemindg26.herokuapp.com/recovery/' + results[0]._id +'</a>';
+            
+            const sgMail = require('@sendgrid/mail');
+            sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+            var message = "<strong>Test message<br>Hopefully it works</strong>"
+            const msg = {
+                to: email, // Change to your recipient
+                from: 'Hivemind.Incorportated@gmail.com', // Change to your verified sender
+                subject: 'Hivemind Password Recovery',
+                text: 'and easy to do anywhere, even with Node.js',
+                html: emailMsg
+            };
+            sgMail.send(msg);
+        }
+    }   
     catch(e){
         error = e.toString();
-    }
+    } 
 
     var ret = {Error:error};
     res.status(200).json(ret);
 });
+
 app.post('/api/changePassword', async (req, res, next) => {
-    //Change the password to the account
-    //Input: Username
+    //Change the password of the user
+    //Incoming: userID, password
+    //Outgoing: error if any
+
+    //create empty error variable
+    var error = "";
+
+    const {userID, password} = req.body;
+
+    const filter = {_id:ObjectId(userID)};
+    try{
+        //Connect to the database
+        const db = client.db();
+
+        const updateDoc = {
+            $set: {
+                Password:
+                    password,
+            },
+        }
+        const results1 = await db.collection('User').updateOne(filter, updateDoc);
+        error = "Successfully changed password";
+    }
+    catch(e){
+        error = e.toString();
+    }
+    var ret = {Error:error};
+    res.status(200).json(ret);
 });
 
 app.post('/api/validateCode', async (req, res, next) => {
@@ -676,16 +723,16 @@ app.post('/api/validateCode', async (req, res, next) => {
     //create empty error variable
     var error = "";
 
-    const {userID,username,validationcode} = req.body;
+    const {username,validationcode} = req.body;
 
     const filter = {Username:username};
 
     try{
-        //Connect to the database and try to find any groups
+        //Connect to the database
         const db = client.db();
 
         //any results that show up will go into results
-        //Look for any documents in the User collection that have the same email
+        //Look for any documents in the User collection that have the same username
         const results = await db.collection('User').find({"Username":username}).toArray();
 
         //if no user is found
@@ -706,9 +753,6 @@ app.post('/api/validateCode', async (req, res, next) => {
             }
             else{
                 //if we're here that means that the user was found and the code matches
-                error = "Validation success";
-
-/***************Here we need to update the users account with validation = 1 ****************************/
 
                 const updateDoc = {
                     $set: {
@@ -717,6 +761,7 @@ app.post('/api/validateCode', async (req, res, next) => {
                     },
                 }
                 const results1 = await db.collection('User').updateOne(filter, updateDoc);
+                error = "Validation success";
             }
         }
     }
