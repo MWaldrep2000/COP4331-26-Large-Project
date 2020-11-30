@@ -46,12 +46,16 @@ function Login() {
         }        
     }; 
 
+    const goToResetPass= () => {
+        window.location.href ='/resetPassword';
+    };
+    
     return (    
         <div>
             <form className="login-form" onSubmit={ doLogin }>
                 <input className="form-input" type="text" id="loginName" placeholder="Username"   ref={(c) => loginName = c} />
                 <input className="form-input" type="password" id="loginPassword" placeholder="Password"   ref={(c) => loginPassword = c} />
-                <span className="fpwrd-text" >Forgot Password?</span>
+                <span className="fpwrd-text" onClick={goToResetPass}>Forgot Password?</span>
                 <div className="loginButton">
                     <input type="submit" className="buttons" value="Login" onClick={doLogin} />       
                 </div>
