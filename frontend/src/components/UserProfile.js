@@ -4,8 +4,7 @@ function UserProfile() {
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
-    var id = ud.ID;
-    var email = ud.Email;
+    var name = ud.Username;
 
 
     // var user ={}
@@ -18,10 +17,15 @@ function UserProfile() {
     return (    
         <div className="profile-div">
             <div id="loggedInDiv" className="loggedInDiv">
-                <span id="userName" className="loggedInName">Welcome  {email} ID = {id}</span>
+                <span id="userName" className="loggedInName">Welcome  {name}, to the Hivemind.</span>
             </div>
-
             <button type="button" id="logoutButton" className="logoutButton" onClick ={doLogout}> Log Out </button>
+            <div className="profile-text">
+                <p>Welcome to Hivemind, the best place to request assisstance in solving any issues you may have.</p>
+                <p>You can create, search or join groups. Once in a group you can post or reply to any issues other users might have.</p>
+                <p>Number of groups you are a part of: XX</p>
+                <p>Number of issues you have created: XX</p>
+            </div>
         </div>
     );
 };

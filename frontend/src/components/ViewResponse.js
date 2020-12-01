@@ -50,7 +50,6 @@ class ViewResponse extends Component {
             sendReply();
             document.getElementById("reply").value = "";
             this.setState({ReplyToSend:""});
-            findReplies(this.props.issue._id);
         }
 
         const sendReply = async () => {
@@ -87,7 +86,8 @@ class ViewResponse extends Component {
             } catch(e) {            
                 alert(e.toString());            
                 return;        
-            }      
+            }
+            findReplies(this.props.issue._id);      
         }
         const findReplies = async (issueId) => {
 

@@ -137,10 +137,44 @@ class JoinedGroups extends Component {
                         this.componentWillMount();
                 } catch(e) {
                     alert(e.toString());
-                    return
+                    return;
                 }
             }
             else {
+                return;
+            }
+        }
+
+        
+        const handleClick3 = async (id, gname) => {
+
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
+
+            try {
+                var _ud = localStorage.getItem('user_data');
+                var ud = JSON.parse(_ud);
+                var uid = ud.ID;
+                var obj = {userID:uid, groupID:id};        
+                var js = JSON.stringify(obj); 
+                const response = await fetch(buildPath('api/leaveGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                var res = JSON.parse(await response.text());
+                this.setState({
+                    message: res.Error,
+                })
+                this.componentWillMount();
+            } catch(e) {
+                alert(e.toString());
                 return;
             }
         }
@@ -153,6 +187,7 @@ class JoinedGroups extends Component {
                             {group.Name}
                             <button id={group._id} className="hpg-group-button" onClick={() => handleClick(group._id, group.Name)}>Open Issues</button>
                             <button id={group._id} className="hpg-delete-button" onClick={() => handleClick2(group._id, group.Name)}><strong>X</strong></button>
+                            <button id={group._id} className="hpg-leave-button" onClick={() => handleClick3(group._id, group.Name)}></button>
                         </span>
                         
                         ))}

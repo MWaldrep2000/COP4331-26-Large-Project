@@ -32,8 +32,7 @@ function Verify() {
                 setMessage(res.Error);            
             } else if (res.Error === "Incorrect validation code") {            
                 setMessage(res.Error);               
-            } else if (res.Error === "Validation success"){      
-                alert("Verification success");                
+            } else if (res.Error === "Validation success"){               
                 setMessage('');               
                 window.location.href = '/';            
             }        

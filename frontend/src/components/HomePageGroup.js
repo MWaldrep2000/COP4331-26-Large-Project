@@ -79,7 +79,7 @@ class HomePageGroup extends Component {
                 else
                 {
                     this.setState({
-                        joinMessage: '',
+                        joinMessage: 'Join Successful',
                     })
                 }
             } catch(e) {
