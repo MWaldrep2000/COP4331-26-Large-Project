@@ -105,23 +105,23 @@ class HomePageGroup extends Component {
                         </span>
                         <span className="group-names">
                             {this.state.names[this.state.randomNumbers[1]].Name}
-                            <button id={this.state.names[this.state.randomNumbers[1]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[0]]._id)}>Join Group</button>
+                            <button id={this.state.names[this.state.randomNumbers[1]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[1]]._id)}>Join Group</button>
                         </span>
                         <span className="group-names">
                             {this.state.names[this.state.randomNumbers[2]].Name}
-                            <button id={this.state.names[this.state.randomNumbers[2]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[0]]._id)}>Join Group</button>
+                            <button id={this.state.names[this.state.randomNumbers[2]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[2]]._id)}>Join Group</button>
                         </span>
                         <span className="group-names">
                             {this.state.names[this.state.randomNumbers[3]].Name}
-                            <button id={this.state.names[this.state.randomNumbers[3]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[0]]._id)}>Join Group</button>
+                            <button id={this.state.names[this.state.randomNumbers[3]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[3]]._id)}>Join Group</button>
                         </span>
                         <span className="group-names">
                             {this.state.names[this.state.randomNumbers[4]].Name}
-                            <button id={this.state.names[this.state.randomNumbers[4]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[0]]._id)}>Join Group</button>
+                            <button id={this.state.names[this.state.randomNumbers[4]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[4]]._id)}>Join Group</button>
                         </span>
                         <span className="group-names">
                             {this.state.names[this.state.randomNumbers[5]].Name}
-                            <button id={this.state.names[this.state.randomNumbers[5]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[0]]._id)}>Join Group</button>
+                            <button id={this.state.names[this.state.randomNumbers[5]]._id} className="hpg-group-button" onClick={() => handleClick(this.state.names[this.state.randomNumbers[5]]._id)}>Join Group</button>
                         </span>   
                     </>
 
