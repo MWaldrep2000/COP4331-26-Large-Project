@@ -20,6 +20,7 @@ class JoinedGroups extends Component {
             issues: ["-Issues-"],
             groupNames: "Select a Group",
             groupID: 0,
+            message: '',
         }
     }
 
@@ -103,6 +104,47 @@ class JoinedGroups extends Component {
             }
         }
 
+        const handleClick2 = async (id, gname) => {
+
+            const app_name = 'hivemindg26';
+            function buildPath(route)
+            {
+                if (process.env.NODE_ENV === 'production') 
+                {
+                    return 'https://' + app_name +  '.herokuapp.com/' + route;
+                }
+                else
+                {        
+                    return 'http://localhost:5000/' + route;
+                }
+            }
+            var r = window.confirm("Are you sure you want to permanently delete this Group?");
+            if (r == true)
+            {
+                try {
+                    var _ud = localStorage.getItem('user_data');
+                    var ud = JSON.parse(_ud);
+                    var uid = ud.ID;
+
+                    var obj = {userID:uid, groupID:id};        
+                    var js = JSON.stringify(obj); 
+                    const response = await fetch(buildPath('api/deleteGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                    var res = JSON.parse(await response.text());
+
+                        this.setState({
+                            message: res.Error,
+                        })
+                        this.componentWillMount();
+                } catch(e) {
+                    alert(e.toString());
+                    return
+                }
+            }
+            else {
+                return;
+            }
+        }
+
         return(
             <>
                 <div className="mygroups-div">
@@ -110,10 +152,12 @@ class JoinedGroups extends Component {
                         <span className="mygroup-names">
                             {group.Name}
                             <button id={group._id} className="hpg-group-button" onClick={() => handleClick(group._id, group.Name)}>Open Issues</button>
+                            <button id={group._id} className="hpg-delete-button" onClick={() => handleClick2(group._id, group.Name)}><strong>X</strong></button>
                         </span>
                         
                         ))}
                 </div>
+                <span id="deleteResult" className="delete-error">{this.state.message}</span>
                 <SideBarIssues state={this.state}/>
             </>
         );
