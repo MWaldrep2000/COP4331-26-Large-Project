@@ -137,7 +137,8 @@ app.post('/api/register', async (req, res, next) => {
 
         validationCode = Math.random().toString(36).substring(2, 12).toUpperCase();
         emailMsg = 'Thank you for creating an account with Hivemind! Now that you have created your account, the next step is to ';
-        emailMsg += 'validate your account. To do so, just enter the following code in the validation page.';
+        emailMsg += 'validate your account. To do so, login with Username and Passsword to access the validation page.';
+        emailMsg += 'From there, just enter your username along with validation code below and you are ready to go!';
         emailMsg += '<br><br>Validation code: ' + validationCode;
 
         const sgMail = require('@sendgrid/mail');
