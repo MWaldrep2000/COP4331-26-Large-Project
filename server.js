@@ -161,9 +161,12 @@ app.post('/api/register', async (req, res, next) => {
         };
         sgMail.send(msg);
         
+        //create empty refresh token
+        const refreshToken = "";
+
         //create the body for a new user to add to the Users collection
         //We dont need to add an ID since MongoDB seems to do that for us
-        const newUser = {Username:username, Password:password, Validated:validated, Email:email, Code:validationCode};
+        const newUser = {Username:username, Password:password, Validated:validated, Email:email, Code:validationCode, RefreshToken:refreshToken};
 
         //if neither the username or email is taken, then we
         //can add the new user
