@@ -27,7 +27,6 @@ class MyIssueViewIssue extends Component {
         this.handleReply();
         document.getElementById("reply").value = "";
         this.setState({ReplyToSend:""});
-        this.props.handleRefresh(this.props.data.IssueID);
     }
 
     async handleReply () {
@@ -65,7 +64,7 @@ class MyIssueViewIssue extends Component {
             alert(e.toString());            
             return;        
         }      
-        
+        this.props.handleRefresh(this.props.data.IssueID);
     }
         render (){
 

@@ -284,7 +284,7 @@ body {
     margin: 2% 10%;
     right: -100px;
     /* top: 100px; */
-    width: 40%;
+    width: 50%;
     height: 70%;
     /* border: 1px solid #000000; */
     /* border-radius: 5px; */
@@ -458,6 +458,22 @@ right: 20%; */
     background-color: #d51c1c;
     font-size: 80%;
     padding-bottom: 20px;
+}
+
+.hpg-leave-button{
+    position: absolute;
+    width: 3%;
+    height: 2%;
+    left: 1%;
+    margin-bottom: 1%;
+    margin-top: 5%;
+    border: 1px solid black;
+    background-color: #646464;
+    font-size: 80%;
+    padding-bottom: 20px;
+    background-image: url(./logoImages/leave.png);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .hpg-group-button:focus {
@@ -948,4 +964,11 @@ right: 20%; */
     bottom: 8%;
     left: 5%;
     text-align: center;
+}
+
+.profile-text {
+    color: black;
+    position: absolute;
+    top: 10%;
+    padding: 2%;
 }
