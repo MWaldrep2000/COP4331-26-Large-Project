@@ -447,6 +447,19 @@ right: 20%; */
     font-size: small;
 }
 
+.hpg-delete-button{
+    position: absolute;
+    width: 3%;
+    height: 2%;
+    left: 1%;
+    margin-top: 1%;
+    margin-bottom: 5%;
+    border: 1px solid black;
+    background-color: #d51c1c;
+    font-size: 80%;
+    padding-bottom: 20px;
+}
+
 .hpg-group-button:focus {
     outline: none;
 }
@@ -926,5 +939,13 @@ right: 20%; */
     color: black;
     position: absolute;
     bottom: 25%;
+    text-align: center;
+}
+
+.delete-error {
+    color: black;
+    position: absolute;
+    bottom: 8%;
+    left: 5%;
     text-align: center;
 }
