@@ -4,8 +4,8 @@ const isAuth = req => {
     const authorization = req.headers['authorization'];
     if(!authorization) throw new Error("Not logged in");
     const token = authorization.split(' ')[1];
-    const { userId } = verify(token, process.env.ACCESS_TOKEN_SECRET);
-    return userId;
+    const { userID } = verify(token, process.env.ACCESS_TOKEN_SECRET);
+    return userID;
 }
 
 module.exports = {

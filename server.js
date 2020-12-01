@@ -10,7 +10,7 @@ const {
     createAccessToken,
     createRefreshToken,
     sendAccessToken,
-    sendRefreshTOken,
+    sendRefreshToken,
 } = require('./tokens.js');
 
 const path = require('path');
@@ -81,7 +81,7 @@ app.post('/api/login', async (req, res, next) =>
     //an array
     const db = client.db();
     const results = await db.collection('User').find({Username:login,Password:password}).toArray();
-
+    
     //everything down here is pretty self explanatory
     var flag = -1;
     var email = '';
@@ -95,13 +95,96 @@ app.post('/api/login', async (req, res, next) =>
         id = results[0]._id;
     }
     else
+    {
         error = "Invalid Username/Password";
+        //var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
+        //res.status(200).json(ret);
+    }
+    
+    const accesstoken = createAccessToken(id);
+    const refreshToken = createRefreshToken(id);
+    
+    // put the refresh token in the DB
+    const filter = {_id:results[0]._id};
+    try{
+        
+        const updateDoc = {
+            $set: {
+                RefreshToken:
+                    refreshToken,
+            },
+        }
+        const results1 = await db.collection('User').updateOne(filter, updateDoc);
+        error = "Successfully uploaded refresh token";
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    // Send refresh token as cookie, access token regular
+    sendRefreshToken(res, refreshToken);
 
     //here we are returning what we got back to the function
     //So we're returning an id, a firstname, lastname and an
     //error if any
-    var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
+    var ret = {AccessToken : accesstoken, Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
     res.status(200).json(ret);
+});
+
+// Logout API
+app.post('/api/logout', async (_req, res) => {
+    res.clearCookie("refreshtoken", { path: '/refresh_token'});
+    return res.send({
+        message: "Logged out",
+    })
+});
+
+// Get a new access token with a refresh token
+app.post('/refresh_token', async (req, res) => {
+    const token = req.cookies.refreshtoken;
+
+    // If no token in request, return empty access token
+    if (!token) return res.send({ accesstoken: ''});
+
+    // Verify token
+    let payload = null;
+    try {
+        payload = verify(token, process.env.REFRESH_TOKEN_SECRET);
+    } catch (err) {
+        return res.send({ accesstoken: ''});
+    }
+
+    // Token verified validate user
+    // Get user from db
+    const db = client.db();
+    const user = await db.collection('User').find({Username:login,Password:password, RefreshToken: token}).toArray();
+
+    // if no user, return empty access token
+    if (!user) return res.send({ accesstoken: '' });
+
+    // Everything checks out!!! Let's create new tokens
+    const accesstoken = createAccessToken(user._id);
+    const refreshtoken = createRefreshToken(user._id);
+
+    // Stick refresh token in DB
+    const filter = {_id:user[0]._id};
+    try{        
+        const updateDoc = {
+            $set: {
+                RefreshToken:
+                    refreshToken,
+            },
+        }
+        const results1 = await db.collection('User').updateOne(filter, updateDoc);
+        error = "Successfully uploaded refresh token";
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    // Send both tokens to frontend
+    sendRefreshToken(res, refreshtoken);
+    return res.send({ accesstoken });
 });
 
 app.post('/api/register', async (req, res, next) => {  
@@ -197,6 +280,14 @@ app.post('/api/createGroup', async (req, res, next) => {
     //We dont need to add an ID since MongoDB seems to do that for us
     const newGroup = {Name:groupname};
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
          //Connect with the database
          const db = client.db();
 
