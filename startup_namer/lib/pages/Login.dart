@@ -155,6 +155,7 @@ class _LoginState extends State<Login> {
                               storage.setItem('ID', currentUser.id);
                               storage.setItem('Validated', currentUser.validated);
                               storage.setItem('Flag', currentUser.flag);
+                              storage.setItem('User', tempUser.login);
 
                               if (currentUser.validated == 1) {
                                 Navigator.pushReplacement(
