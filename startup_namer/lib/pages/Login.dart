@@ -212,7 +212,7 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => PasswordRecover()),
+                              MaterialPageRoute(builder: (context) => PasswordRecovery()),
                             );
                           },
                           padding: EdgeInsets.only(right: 40.0),
