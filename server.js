@@ -782,7 +782,6 @@ app.post('/api/deleteGroup', async (req, res, next) => {
 
     const {userID,groupID} = req.body;
 
-    var _search = groupID.trim();
     try{
         //Connect to the database
         const db = client.db();
@@ -836,6 +835,43 @@ app.post('/api/deleteGroup', async (req, res, next) => {
 
         }
 
+    }
+    catch(e){
+        error = e.toString();
+    }
+    var ret = {Error:error};
+    res.status(200).json(ret);
+});
+
+app.post('/api/leaveGroup', async (req, res, next) => {
+    //Incoming: userID, groupID
+    //Outgoing: error
+
+    //create empty error variable
+    var error = "";
+
+    const {userID,groupID} = req.body;
+
+    try{
+        //Connect to the database
+        const db = client.db();
+
+        //any results that show up will go into results
+        //Look for any documents in the Member collection that have the same UserID and GroupID
+        const results = await db.collection('Member').find({"UserID":userID,"GroupID":ObjectId(groupID)}).toArray();
+
+        if (results[0].Role == "admin"){
+            error = "Admin cannot leave group";
+            var ret = {Error:error};
+            res.status(200).json(ret);
+            return;
+        }
+
+        else{
+            //user is not the admin
+            var deletedItem = await db.collection('Member').deleteOne({UserID:userID,GroupID:ObjectId(groupID)});
+            error = "Successfully left group";
+        }
     }
     catch(e){
         error = e.toString();
