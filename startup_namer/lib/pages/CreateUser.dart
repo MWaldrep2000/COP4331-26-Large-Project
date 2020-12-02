@@ -1,3 +1,4 @@
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
@@ -144,7 +145,7 @@ class _CreateUserState extends State<CreateUser> {
                             EdgeInsets.only(left: 15, bottom: 18, top: 11, right: 15)
                         ),
                         onChanged: (temp) {
-                          password = temp;
+                          password = md5.convert(utf8.encode(temp)).toString();
                         },
                       ),
 
@@ -172,7 +173,7 @@ class _CreateUserState extends State<CreateUser> {
                             EdgeInsets.only(left: 15, bottom: 18, top: 11, right: 15)
                         ),
                         onChanged: (temp) {
-                          passwordConfirm = temp;
+                          passwordConfirm = md5.convert(utf8.encode(temp)).toString();
                         },
                       ),
 
