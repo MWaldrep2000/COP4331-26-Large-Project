@@ -14,9 +14,11 @@ const {
     sendRefreshToken,
 } = require('./tokens.js');
 
+
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const app = express();
+app.use(cookieParser());
 
 app.set('port', process.env.PORT || 5000);
 
@@ -86,7 +88,8 @@ app.post('/api/login', async (req, res, next) =>
     //everything down here is pretty self explanatory
     var flag = -1;
     var email = '';
-    var validated = -1
+    var validated = -1;
+    var id = 0;
 
     if( results.length > 0 )
     {
@@ -97,14 +100,17 @@ app.post('/api/login', async (req, res, next) =>
     }
     else
     {
+        id = 0;
         error = "Invalid Username/Password";
-        //var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
-        //res.status(200).json(ret);
+        var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
+        res.status(200).json(ret);
+        return;
     }
 
 
-    const accesstoken = createAccessToken();
+    const accesstoken = createAccessToken(id);
     const refreshToken = createRefreshToken(id);
+    
     
     // put the refresh token in the DB
     const filter = {_id:results[0]._id};
@@ -125,6 +131,17 @@ app.post('/api/login', async (req, res, next) =>
 
     // Send refresh token as cookie, access token regular
     sendRefreshToken(res, refreshToken);
+    // res.cookie('refreshtoken', refreshToken, {
+    //     httpOnly: false,
+    //     domain: "localhost",
+    //     path: '/refresh_token',
+    // });
+
+    
+
+
+
+
 
     //here we are returning what we got back to the function
     //So we're returning an id, a firstname, lastname and an
@@ -144,6 +161,7 @@ app.post('/api/logout', async (_req, res) => {
 
 // Get a new access token with a refresh token
 app.post('/refresh_token', async (req, res) => {
+    console.log('in refresh token');
     const token = req.cookies.refreshtoken;
 
     // If no token in request, return empty access token
@@ -391,7 +409,6 @@ app.post('/api/readGroup', async (req, res, next) => {
 
     //create a new variable with the search string being trimmed down of any extra whitespace
     var search = "";
-
     const {flag, userID} = req.body;
     //if flag equals 0 then we return everysingle group in the database
 
@@ -399,10 +416,11 @@ app.post('/api/readGroup', async (req, res, next) => {
         try{
             // Authorize user
             const userAuth = isAuth(req);
+            console.log('here');
             if (userAuth === null) {
-            res.send({
-                err: 'Access Denied',
-            })
+                res.send({
+                    err: 'Access Denied',
+                })
             }
             //Connect to the database and try to find any groups
             const db = client.db();
@@ -920,13 +938,13 @@ app.post('/api/validateCode', async (req, res, next) => {
 
     try{
         // Authorize user
-        const userAuth = isAuth(req);
-        if (userAuth === null) 
-        {
-            res.send({
-                err: 'Access Denied',
-            })
-        }
+        // const userAuth = isAuth(req);
+        // if (userAuth === null) 
+        // {
+        //     res.send({
+        //         err: 'Access Denied',
+        //     })
+        // }
         //Connect to the database
         const db = client.db();
 

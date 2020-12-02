@@ -25,9 +25,11 @@ class ViewResponse extends Component {
                 }
             }
             try {
+                var _ud = localStorage.getItem('user_data');
+                var ud = JSON.parse(_ud);    
                 var obj = {issueID:this.props.issue._id};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     Replies: res.Results,
@@ -78,7 +80,7 @@ class ViewResponse extends Component {
             var js = JSON.stringify(obj);
     
             try {                
-                const response = await fetch(buildPath('api/replyToIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});           
+                const response = await fetch(buildPath('api/replyToIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});           
                 var res = JSON.parse(await response.text());
                 if( res.Error !== "" ) {                         
                     alert(res.Error);           
@@ -104,9 +106,11 @@ class ViewResponse extends Component {
                 }
             }
             try {
+                var _ud = localStorage.getItem('user_data');
+                var ud = JSON.parse(_ud);
                 var obj = {issueID:issueId};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     Replies: res.Results,

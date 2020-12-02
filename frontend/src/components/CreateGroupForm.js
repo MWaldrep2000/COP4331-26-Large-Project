@@ -32,7 +32,7 @@ function CreateGroupForm (){
         // alert(js);
         try {             
             // alert("inside try block");   
-            const response = await fetch(buildPath('api/createGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+            const response = await fetch(buildPath('api/createGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});
             // alert("response received");        
             var res = JSON.parse(await response.text());
             // alert("finished call");

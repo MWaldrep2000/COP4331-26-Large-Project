@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Cookies from 'universal-cookie';
 
 function Login() {
 
@@ -21,12 +22,15 @@ function Login() {
             }
         }
 
+        var md5 = require('md5');
+        var hashedPassword = md5(loginPassword.value);
+
         event.preventDefault();        
-        var obj = {login:loginName.value,password:loginPassword.value};        
+        var obj = {login:loginName.value,password:hashedPassword};        
         var js = JSON.stringify(obj);        
         
         try {               
-            const response = await fetch(buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});        
+            const response = await fetch(buildPath('api/login'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'WithCredentials' : true}});        
             var res = JSON.parse(await response.text());
             if( res.Flag <= 0 ) {                
                 setMessage('User/Password combination incorrect');            
@@ -35,7 +39,14 @@ function Login() {
                 window.location.href = '/validate'; 
             } else {     
                 // Temporary user display          
-                var user = {Email:res.Email,ID:res.ID, Username:loginName.value};           
+                var user = {Email:res.Email,ID:res.ID, Username:loginName.value, AccessToken:res.AccessToken};   
+
+                //This works to make a cookie, but it needs to be made in tokens.js!!!!!!!!!!!!! IDK???
+                // const cookies = new Cookies();
+                // cookies.set('test', 'test2', {
+                //     path: '/',
+                //     httpOnly: false,
+                // });
                 localStorage.setItem('user_data', JSON.stringify(user));                
                 setMessage('');               
                 window.location.href = '/home';            

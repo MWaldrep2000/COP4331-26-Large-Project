@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 function ForgotPass() {
 
     var uEmail;
+    var _ud = localStorage.getItem('user_data');
+    var ud = JSON.parse(_ud);
 
     const [message, setMessage] = useState('');
 
@@ -26,7 +28,7 @@ function ForgotPass() {
         var js = JSON.stringify(obj);        
         
         try {                
-            const response = await fetch(buildPath('api/resetPasswordLink'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});        
+            const response = await fetch(buildPath('api/resetPasswordLink'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});        
             var res = JSON.parse(await response.text());
             if ( res.Error !== '' ) {                
                 setMessage(res.Error);            
