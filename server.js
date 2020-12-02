@@ -899,13 +899,13 @@ app.post('/api/changePassword', async (req, res, next) => {
     const filter = {_id:ObjectId(userID)};
     try{
         // Authorize user
-        const userAuth = isAuth(req);
-        if (userAuth === null) 
-        {
-            res.send({
-                err: 'Access Denied',
-            })
-        }
+        // const userAuth = isAuth(req);
+        // if (userAuth === null) 
+        // {
+        //     res.send({
+        //         err: 'Access Denied',
+        //     })
+        // }
         //Connect to the database
         const db = client.db();
 
