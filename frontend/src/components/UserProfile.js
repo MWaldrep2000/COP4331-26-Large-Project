@@ -71,9 +71,9 @@ class UserProfile extends Component {
                     <p>Welcome to Hivemind, the best place to request assisstance in solving any issues you may have.</p>
                     <p>You can create, search or join groups. Once in a group you can post or reply to any issues other users might have.</p>
                     <br/>
-                    <p>Number of groups you are a part of: {this.state.numberGroups}</p>
+                    <p>Number of groups you are a part of: <b>{this.state.numberGroups}</b></p>
                     <br/>
-                    <p>Number of issues you have created: {this.state.numberIssues}</p>
+                    <p>Number of issues you have created: <b>{this.state.numberIssues}</b></p>
                 </div>
             </div>
         );
