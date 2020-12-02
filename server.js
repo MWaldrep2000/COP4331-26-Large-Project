@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -81,7 +82,7 @@ app.post('/api/login', async (req, res, next) =>
     //an array
     const db = client.db();
     const results = await db.collection('User').find({Username:login,Password:password}).toArray();
-    
+
     //everything down here is pretty self explanatory
     var flag = -1;
     var email = '';
@@ -100,8 +101,9 @@ app.post('/api/login', async (req, res, next) =>
         //var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
         //res.status(200).json(ret);
     }
-    
-    const accesstoken = createAccessToken(id);
+
+
+    const accesstoken = createAccessToken();
     const refreshToken = createRefreshToken(id);
     
     // put the refresh token in the DB
@@ -134,6 +136,7 @@ app.post('/api/login', async (req, res, next) =>
 // Logout API
 app.post('/api/logout', async (_req, res) => {
     res.clearCookie("refreshtoken", { path: '/refresh_token'});
+
     return res.send({
         message: "Logged out",
     })
@@ -192,12 +195,11 @@ app.post('/api/register', async (req, res, next) => {
     // outgoing: id, error  
 
     //create empty error string
-    var error = "Registration Complete"
+    var error = "Registration Complete";
     var validated = 0
     //req is what was sent over from the frontend
     //which is username, password and email
     const { username, password, email } = req.body;  
-
     try
     {
         //Connect with the database
@@ -205,7 +207,6 @@ app.post('/api/register', async (req, res, next) => {
 
         //before we add a user we need to see if the username is taken
         const result1 = await db.collection('User').find({Username:username}).toArray();
-
         //if we get a result that means that the username is taken and return with error
         if(result1.length > 0)
         {
@@ -344,7 +345,14 @@ app.post('/api/searchGroup', async (req, res, next) => {
     var _search = search.trim();
     
     try{
-        
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
         //Connect to the database and try to find any groups
         const db = client.db();
 
