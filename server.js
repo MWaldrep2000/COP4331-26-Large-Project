@@ -533,6 +533,14 @@ app.post('/api/createIssue', async (req, res, next) => {
     const newIssue = {MemberID:memberID, GroupID:groupID, Topic:topic, Description:description, Username:username}
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect with the database
         const db = client.db();
 
