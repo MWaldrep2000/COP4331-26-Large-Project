@@ -145,6 +145,8 @@ class _MyIssuesState extends State<MyIssues> {
                                                         elevation: 5.0,
                                                         onPressed: () {
                                                           print("Something stupid");
+                                                          storage.setItem('IssueID', snapshot.data.issuesList[i]['_id']);
+                                                          storage.setItem('CurrentIssueInfo', snapshot.data.issuesList[i]);
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(builder: (context) => Issue()),

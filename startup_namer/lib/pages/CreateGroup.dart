@@ -117,6 +117,9 @@ class _CreateGroupState extends State<CreateGroup> {
                           if(groupData.error.contains('Group already Exists') ){
                             Fluttertoast.showToast(msg: 'Group has already been created!');
                           }
+                          else{
+                            Fluttertoast.showToast(msg: 'Group Created');
+                          }
                       });
                     },
                     shape: RoundedRectangleBorder(
