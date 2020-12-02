@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: sans-serif;
 
 }  
 
@@ -10,7 +11,7 @@
 body {
     background-image: linear-gradient(#ffffff 0%, #67B594 100%);
     color: white;
-    font-family: sans-serif;
+    
     min-height: 100vh;
     position: relative;
     display: flex;
@@ -232,10 +233,10 @@ body {
 .profile-div {
     position: absolute;
     width: 30%;
-    height: 70%;
+    height: 50%;
     /* border: 1px solid #000000; */
     border-radius: 5px;
-    margin: 2% 10%;
+    margin: 5% 10%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -277,6 +278,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
 }
 
 .groups-div {
@@ -514,7 +516,7 @@ right: 20%; */
     border-radius: 2px;
     margin: 10px 5px 10px;
     box-shadow: 0.01px 0.01px 5px #000000;
-    
+    text-align: center;
 }
 
 .myissue-topic {
@@ -971,4 +973,14 @@ right: 20%; */
     position: absolute;
     top: 10%;
     padding: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+p {
+    text-align: center;
+    
 }

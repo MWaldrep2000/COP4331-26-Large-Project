@@ -56,7 +56,8 @@ const SideBarIssues = ({state}) => {
                 {((typeof state.issues[0]) === "string") ? <p className="leftMarg">{state.issues[0]}</p> : 
                 state.issues.map((iss, index) => (
                     <span className="myissue-names">
-                        {iss.Topic} Post by: {iss.Username}
+                        {iss.Topic}<br/>
+                        Posted by: {iss.Username}
                         <button id={iss.GroupID} className="response-button" onClick={() => seeResponses( iss )}>See Responses</button>
                     </span>
                 ))}
