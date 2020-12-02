@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const Cookies = require('js-cookie');
+
 function Login() {
 
     var loginName, loginPassword;
@@ -35,7 +37,9 @@ function Login() {
                 window.location.href = '/validate'; 
             } else {     
                 // Temporary user display          
-                var user = {Email:res.Email,ID:res.ID, Username:loginName.value};           
+                var user = {Email:res.Email,ID:res.ID, Username:loginName.value, AccessToken:res.AccessToken};   
+                var RefreshToken = response.cookies;        
+                alert(RefreshToken);
                 localStorage.setItem('user_data', JSON.stringify(user));                
                 setMessage('');               
                 window.location.href = '/home';            

@@ -103,7 +103,7 @@ app.post('/api/login', async (req, res, next) =>
     }
 
 
-    const accesstoken = createAccessToken();
+    const accesstoken = createAccessToken(id);
     const refreshToken = createRefreshToken(id);
     
     // put the refresh token in the DB
