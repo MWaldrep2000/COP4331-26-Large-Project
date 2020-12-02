@@ -18,18 +18,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../getGroupsIssues.dart';
 import 'Issue.dart';
 
 
-class MyIssues extends StatefulWidget {
+class GroupIssues extends StatefulWidget {
   @override
-  _MyIssuesState createState() => _MyIssuesState();
+  _GroupIssuesState createState() => _GroupIssuesState();
 }
 
-class _MyIssuesState extends State<MyIssues> {
+class _GroupIssuesState extends State<GroupIssues> {
 
-  Future<getMyIssues> _getMyIssuesResults;
-  getMyIssues currentIssues;
+  Future<getGroupsIssues> _getGroupsIssuesResults;
+  getGroupsIssues currentIssues;
 
   final LocalStorage storage = new LocalStorage('data');
 
@@ -37,15 +38,20 @@ class _MyIssuesState extends State<MyIssues> {
   @override
   Widget build(BuildContext context) {
 
+
+    print('Before getting CurrentGroupID');
+    print(storage.getItem('CurrentGroup'));
+    print("After getting CurrentGroupID");
     // Initially gets all of the groups in the database
-    _getMyIssuesResults = fetchMyIssuesResults(storage.getItem('User'));
-    _getMyIssuesResults.then((temp) {
+    _getGroupsIssuesResults = fetchGroupsIssuesResults(storage.getItem('CurrentGroup'));
+    _getGroupsIssuesResults.then((temp) {
       print("helloiiieieie");
+      print(temp);
       currentIssues = temp;
 
-    //   print(currentIssues.issuesList);
-    //   // print(currentGroups.groupList);
-    //   //print("TestingA");
+      //   print(currentIssues.issuesList);
+      //   // print(currentGroups.groupList);
+      //   //print("TestingA");
     });
 
     return GestureDetector(
@@ -58,7 +64,7 @@ class _MyIssuesState extends State<MyIssues> {
         },
         child: Scaffold(
             appBar: AppBar(
-              title: Text("My Issues"),
+              title: Text("Group Issues"),
               backgroundColor: Colors.teal,
               leading: IconButton(
                   alignment: Alignment.center,
@@ -116,13 +122,13 @@ class _MyIssuesState extends State<MyIssues> {
 
                             SingleChildScrollView(
                               child: FutureBuilder(
-                                  future: _getMyIssuesResults,
+                                  future: _getGroupsIssuesResults,
                                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                                     List<Widget> children;
                                     print('yerrrrrr');
                                     if (snapshot.connectionState == ConnectionState.done && snapshot.data.issuesList != null) {
                                       List<Widget> cardWidgets = [];
-                                      print('made it past the nullllllllll');
+                                      print('made it past the null in GroupsIssues');
                                       print(snapshot.data.issuesList);
                                       if(snapshot.data != null){
                                         for (int i = 0; i < snapshot.data.issuesList.length; i++) {

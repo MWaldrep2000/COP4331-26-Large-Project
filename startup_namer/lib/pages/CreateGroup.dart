@@ -39,6 +39,7 @@ class _CreateGroupState extends State<CreateGroup> {
         },
       child: Scaffold(
         appBar: AppBar(
+          title: Text("Create Group"),
           actions: <Widget>[
             IconButton(
               icon: Icon(
