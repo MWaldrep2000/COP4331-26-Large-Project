@@ -28,7 +28,7 @@ function ForgotPass() {
         var js = JSON.stringify(obj);        
         
         try {                
-            const response = await fetch(buildPath('api/resetPasswordLink'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});        
+            const response = await fetch(buildPath('api/resetPasswordLink'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});        
             var res = JSON.parse(await response.text());
             if ( res.Error !== '' ) {                
                 setMessage(res.Error);            
