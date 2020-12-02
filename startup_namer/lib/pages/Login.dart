@@ -13,6 +13,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+
 
 import 'Verification.dart';
 
@@ -151,7 +154,9 @@ class _LoginState extends State<Login> {
                                 EdgeInsets.only(left: 15, bottom: 18, top: 11, right: 15)
                             ),
                             onChanged: (temp) {
-                              tempUser.password = temp;
+
+                              tempUser.password = md5.convert(utf8.encode(temp)).toString();
+
                             },
                           ),
                         ),
@@ -165,6 +170,7 @@ class _LoginState extends State<Login> {
                         child: RaisedButton(
                           elevation: 5.0,
                           onPressed: () {
+                             print(tempUser.password);
                             _futureloginResults = fetchloginResults(tempUser.login, tempUser.password);
                             _futureloginResults.then((currentUser) {
                               print("The future is holding data");
@@ -173,6 +179,7 @@ class _LoginState extends State<Login> {
                               storage.setItem('Validated', currentUser.validated);
                               storage.setItem('Flag', currentUser.flag);
                               storage.setItem('User', tempUser.login);
+                              storage.setItem('AccessToken', currentUser.accessToken);
                               // _getUserData();
 
                               // print('finding user data');
@@ -180,6 +187,7 @@ class _LoginState extends State<Login> {
 
 
                               if (currentUser.validated == 1) {
+                                print(storage.getItem('AccessToken'));
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(builder: (context) => HomePage()),

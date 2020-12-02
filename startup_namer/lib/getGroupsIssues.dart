@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 class getGroupsIssues{
   var issuesList;
@@ -17,10 +18,11 @@ class getGroupsIssues{
 }
 
 Future<getGroupsIssues> fetchGroupsIssuesResults(String GroupID) async{
+  final LocalStorage storage = new LocalStorage('data');
   final http.Response response = await http.post(
     'https://hivemindg26.herokuapp.com/api/readIssue',
     headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8', 'authorization': storage.getItem('AccessToken')
     },
     body: jsonEncode(<dynamic, dynamic>{
       'groupID': GroupID,
