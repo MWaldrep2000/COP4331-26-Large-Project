@@ -403,7 +403,7 @@ app.post('/api/readGroup', async (req, res, next) => {
             res.send({
                 err: 'Access Denied',
             })
-        }
+            }
             //Connect to the database and try to find any groups
             const db = client.db();
 
@@ -472,8 +472,17 @@ app.post('/api/joinGroup', async (req, res, next) => {
     //which is the userID, as well as the groupID
     const {userID, groupID} = req.body;
 
-    try{
-        
+    try
+    {
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
         //Connect to the database and try to find any groups
         const db = client.db();
 
