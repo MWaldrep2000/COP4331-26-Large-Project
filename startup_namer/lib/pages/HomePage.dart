@@ -41,6 +41,8 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          leading:Container(),
+          title: Text("Home"),
           // backgroundColor: Color.fromARGB(255, 158, 255, 169),
           backgroundColor: Colors.teal,
           actions: <Widget>[

@@ -20,6 +20,7 @@ import 'package:http/http.dart' as http;
 
 import '../getGroupsIssues.dart';
 import 'Issue.dart';
+import 'MyGroups.dart';
 
 
 class GroupIssues extends StatefulWidget {
@@ -72,7 +73,7 @@ class _GroupIssuesState extends State<GroupIssues> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                      MaterialPageRoute(builder: (context) => MyGroups()),
                     );
                   }
               ),

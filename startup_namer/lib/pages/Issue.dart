@@ -65,7 +65,7 @@ class _IssueState extends State<Issue> {
                   alignment: Alignment.center,
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pop(
                       context,
                       MaterialPageRoute(builder: (context) => MyIssues()),
                     );
@@ -118,7 +118,7 @@ class _IssueState extends State<Issue> {
                               margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 10.0),
                               child: Container(
                                 width: 600,
-                                height: 80,
+                                // height: 80,
                                 padding: EdgeInsets.all(10),
                                 child: Column(
                                   children: <Widget>[
@@ -133,7 +133,7 @@ class _IssueState extends State<Issue> {
                                     ),
                                     Text(
                                       'Description: ${storage.getItem('CurrentIssueInfo')['Description']}',
-                                      overflow: TextOverflow.ellipsis,
+                                      // overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
                                 ),
