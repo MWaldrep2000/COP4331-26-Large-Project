@@ -43,6 +43,7 @@ class PostIssue extends Component {
             const response = await fetch(buildPath('api/createIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});           
             var res = JSON.parse(await response.text());
             iss = res.IssueID;
+            this.props.state.issues.push({Topic:this.state.topic, Description:this.state.description, Username: uname, _id:iss});
             if( res.Error !== "" ) {                         
                 alert(res.Error);           
             }        
@@ -50,7 +51,7 @@ class PostIssue extends Component {
             alert(e.toString());            
             return;        
         }
-        this.props.state.issues.push({Topic:this.state.topic, Description:this.state.description, Username: uname, _id:iss})
+        // this.props.state.issues.push({Topic:this.state.topic, Description:this.state.description, Username: uname, _id:iss});
         this.props.close();
     }
     
