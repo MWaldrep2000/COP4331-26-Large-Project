@@ -59,6 +59,7 @@ class _IssueState extends State<Issue> {
         },
         child: Scaffold(
             appBar: AppBar(
+              title: Text("Issue Replies"),
               backgroundColor: Colors.teal,
               leading: IconButton(
                   alignment: Alignment.center,

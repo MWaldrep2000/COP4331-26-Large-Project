@@ -16,6 +16,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'GroupIssues.dart';
+
 
 class MyGroups extends StatefulWidget {
   @override
@@ -52,6 +54,7 @@ class _MyGroupsState extends State<MyGroups> {
         },
         child: Scaffold(
             appBar: AppBar(
+              title: Text("My Groups"),
               backgroundColor: Colors.teal,
               leading: IconButton(
                   alignment: Alignment.center,
@@ -135,11 +138,13 @@ class _MyGroupsState extends State<MyGroups> {
                                                       RaisedButton(
                                                         elevation: 5.0,
                                                         onPressed: () {
-                                                          print("Something stupid");
-                                                          // Navigator.push(
-                                                          //   context,
-                                                          //   MaterialPageRoute(builder: (context) => ViewIssues()),
-                                                          // );
+                                                          storage.setItem('CurrentGroup', snapshot.data.groupList[i]['_id']);
+                                                          print(snapshot.data.groupList[i]['GroupID']);
+                                                          print("Going into Groups Issues");
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(builder: (context) => GroupIssues()),
+                                                          );
                                                           // print(snapshot.data[1].groupList[i]['_id']);
                                                           // _getJoinGroupResults = fetchJoinResults(storage.getItem('ID'), snapshot.data[0].groupList[i]['_id']);
                                                           // _getJoinGroupResults.then((JoinGroupResult){
@@ -171,7 +176,7 @@ class _MyGroupsState extends State<MyGroups> {
                                     }
 
                                     else {
-                                      print('woahahhahaha');
+                                      print('Before loading circle');
                                       // print(currentGroups.groupList);
                                       children = <Widget>[
                                         SizedBox(

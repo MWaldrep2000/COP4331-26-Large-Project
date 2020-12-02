@@ -58,6 +58,7 @@ class _AddGroupState extends State<AddGroup> {
     },
         child: Scaffold(
           appBar: AppBar(
+            title: Text("Search Groups"),
             backgroundColor: Colors.teal,
             leading: IconButton(
                 alignment: Alignment.center,
