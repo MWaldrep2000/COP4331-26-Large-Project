@@ -1,9 +1,12 @@
+
 import React, { useState } from 'react';
 
 function Register() {
     var createUsername, createPassword, createEmail, confirmPassword;
 
     const [message, setMessage] = useState('');
+
+
 
     const doCreation = async event => {
         const app_name = 'hivemindg26';
@@ -18,10 +21,15 @@ function Register() {
                 return 'http://localhost:5000/' + route;
             }
         }
+
         
         event.preventDefault();        
         //once API is created, change "login" and "password" to their respective names
-        var obj = {username:createUsername.value,password:createPassword.value,email:createEmail.value};        
+        
+        var md5 = require('md5');
+        var hashedPassword = md5(createPassword.value);
+
+        var obj = {username:createUsername.value,password:hashedPassword,email:createEmail.value};        
         var js = JSON.stringify(obj);        
         
         if (createPassword.value !== confirmPassword.value) {
@@ -31,6 +39,8 @@ function Register() {
         else
         {
             try {                
+                var _ud = localStorage.getItem('user_data');
+                var ud = JSON.parse(_ud);
                 const response = await fetch(buildPath('api/register'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});            
                 var res = JSON.parse(await response.text());
                 

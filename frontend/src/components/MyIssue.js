@@ -40,7 +40,7 @@ class MyIssue extends Component {
         var uname = un.Username;
         var obj = {username : uname};     
         var js = JSON.stringify(obj);  
-        const response = await fetch(buildPath('api/readAllIssues'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        const response = await fetch(buildPath('api/readAllIssues'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : un.AccessToken}});
         var res = JSON.parse(await response.text());
         // var issueList = [];
         // issueList = res.Results;
@@ -70,6 +70,8 @@ class MyIssue extends Component {
             console.log(this.state.Replies);
         }
         const findReplies = async (issueId) => {
+            var _ud = localStorage.getItem('user_data');
+            var ud = JSON.parse(_ud);       
 
             const app_name = 'hivemindg26';
             function buildPath(route)
@@ -86,7 +88,7 @@ class MyIssue extends Component {
             try {
                 var obj = {issueID:issueId};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readReplies'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     Replies: res.Results,
