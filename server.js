@@ -837,13 +837,13 @@ app.post('/api/resetPasswordLink', async (req, res, next) => {
 
     try{
         // Authorize user
-        const userAuth = isAuth(req);
-        if (userAuth === null) 
-        {
-            res.send({
-                err: 'Access Denied',
-            })
-        }
+        // const userAuth = isAuth(req);
+        // if (userAuth === null) 
+        // {
+        //     res.send({
+        //         err: 'Access Denied',
+        //     })
+        // }
         //Connect with the database
         const db = client.db();
 
