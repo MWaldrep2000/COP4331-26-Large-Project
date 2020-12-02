@@ -22,9 +22,12 @@ function ResetPass() {
                 return 'http://localhost:5000/' + route;
             }
         }
+
+        var md5 = require('md5');
+        var hashedPassword = md5(uPassword.value);
      
         event.preventDefault();        
-        var obj = {userID:uid, password:uPassword.value};        
+        var obj = {userID:uid, password:hashedPassword};        
         var js = JSON.stringify(obj);        
         if(uPassword.value !== uConfirmPassword.value){
             setMessage('Passwords do not match.');

@@ -31,7 +31,7 @@ function SearchGroup (){
         var obj = {search:searchFor.value};
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+            const response = await fetch(buildPath('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
             var res = JSON.parse(await response.text());
             var searchRes = res.Results;
             if (searchRes.length === 0) {

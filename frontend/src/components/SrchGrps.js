@@ -33,7 +33,7 @@ function SrchGrps (){
         var obj = {search:searchFor.value};
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+            const response = await fetch(buildPath('api/searchGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
             var res = JSON.parse(await response.text());
             var searchRes = res.Results;
             if (searchRes.length === 0) {
@@ -70,7 +70,7 @@ function SrchGrps (){
         var obj = {userID:id,groupID:gid};
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/joinGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+            const response = await fetch(buildPath('api/joinGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
             var res = JSON.parse(await response.text());
 
             if (res.Error === "User is already in this group")

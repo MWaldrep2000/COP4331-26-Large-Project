@@ -56,13 +56,14 @@ const SideBarIssues = ({state}) => {
                 {((typeof state.issues[0]) === "string") ? <p className="leftMarg">{state.issues[0]}</p> : 
                 state.issues.map((iss, index) => (
                     <span className="myissue-names">
-                        {iss.Topic} Post by: {iss.Username}
+                        {iss.Topic}<br/>
+                        Posted by: {iss.Username}
                         <button id={iss.GroupID} className="response-button" onClick={() => seeResponses( iss )}>See Responses</button>
                     </span>
                 ))}
             </div>
         </div>
-        {isOpen? <PostIssue isOpen={isOpen} gname={postName} pid={postID} close={closePost} /> : null}
+        {isOpen? <PostIssue state={state} isOpen={isOpen} gname={postName} pid={postID} close={closePost} /> : null}
         {showIssue? <ViewResponse showIssue={showIssue} issue={currIssue} setIssue={setIssue} refresh={true} close={closeResponse} jankReload={reloader}/> : null}
         </>
     );

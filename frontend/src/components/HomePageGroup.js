@@ -28,19 +28,27 @@ class HomePageGroup extends Component {
             }
         }
 
-        var obj = {flag:0, userID:0};        
-        var js = JSON.stringify(obj);  
-        const response = await fetch(buildPath('api/readGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-        var res = JSON.parse(await response.text());
-        var groupNames = [];
-        groupNames = res.Results;
+        try {
+            var ud = JSON.parse(localStorage.getItem('user_data'));
+      
+            // console.log(ud.ID);
+            var obj = {flag:0, userID:0};        
+            var js = JSON.stringify(obj);  
+            const response = await fetch(buildPath('api/readGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});
+            var res = JSON.parse(await response.text());
+            var groupNames = [];
+            groupNames = res.Results;
+            this.setState({
+                names: groupNames,
+                randomNumbers: [Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length)],
+                isLoaded: true,
+            })    
+        } catch(e) {
+            console.log('problem finding groups');
+        }
 
-        this.setState({
-            names: groupNames,
-            randomNumbers: [Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length), Math.floor(Math.random() * groupNames.length)],
-            isLoaded: true,
-        })
-    
+
+
 
 
     }
@@ -66,7 +74,7 @@ class HomePageGroup extends Component {
             var obj = {userID:uid,groupID:id};
             var js = JSON.stringify(obj);
             try {
-                const response = await fetch(buildPath('api/joinGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/joinGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                 var res = JSON.parse(await response.text());
     
                 if (res.Error === "User is already in this group")

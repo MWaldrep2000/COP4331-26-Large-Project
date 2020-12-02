@@ -43,7 +43,7 @@ class JoinedGroups extends Component {
         var ud = JSON.parse(_ud);
         var obj = {flag:1, userID:ud.ID};        
         var js = JSON.stringify(obj);  
-        const response = await fetch(buildPath('api/readGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        const response = await fetch(buildPath('api/readGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});
         var res = JSON.parse(await response.text());
         var groupNames = [];
         groupNames = res.Results;
@@ -82,7 +82,7 @@ class JoinedGroups extends Component {
             try {
                 var obj = {groupID:id};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch(buildPath('api/readIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/readIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                 var res = JSON.parse(await response.text());
                 if(res.Results.length === 0) {
                     this.setState({
@@ -128,7 +128,7 @@ class JoinedGroups extends Component {
 
                     var obj = {userID:uid, groupID:id};        
                     var js = JSON.stringify(obj); 
-                    const response = await fetch(buildPath('api/deleteGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                    const response = await fetch(buildPath('api/deleteGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                     var res = JSON.parse(await response.text());
 
                         this.setState({
@@ -167,7 +167,7 @@ class JoinedGroups extends Component {
                 var uid = ud.ID;
                 var obj = {userID:uid, groupID:id};        
                 var js = JSON.stringify(obj); 
-                const response = await fetch(buildPath('api/leaveGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});    
+                const response = await fetch(buildPath('api/leaveGroup'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});    
                 var res = JSON.parse(await response.text());
                 this.setState({
                     message: res.Error,

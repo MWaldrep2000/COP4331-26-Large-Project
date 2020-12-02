@@ -1,14 +1,26 @@
+const mongoose = require('mongoose');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const { verify } = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
+const { hash, compare } = require('bcryptjs');
+const { isAuth } = require('./isAuth.js');
+const {
+    createAccessToken,
+    createRefreshToken,
+    sendAccessToken,
+    sendRefreshToken,
+} = require('./tokens.js');
 
 
 const path = require('path');
 const PORT = process.env.PORT || 5000;
 const app = express();
+app.use(cookieParser());
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', process.env.PORT || 5000);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -76,7 +88,8 @@ app.post('/api/login', async (req, res, next) =>
     //everything down here is pretty self explanatory
     var flag = -1;
     var email = '';
-    var validated = -1
+    var validated = -1;
+    var id = 0;
 
     if( results.length > 0 )
     {
@@ -86,13 +99,113 @@ app.post('/api/login', async (req, res, next) =>
         id = results[0]._id;
     }
     else
+    {
+        id = 0;
         error = "Invalid Username/Password";
+        var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
+        res.status(200).json(ret);
+        return;
+    }
+
+
+    const accesstoken = createAccessToken(id);
+    const refreshToken = createRefreshToken(id);
+    
+    
+    // put the refresh token in the DB
+    const filter = {_id:results[0]._id};
+    try{
+        
+        const updateDoc = {
+            $set: {
+                RefreshToken:
+                    refreshToken,
+            },
+        }
+        const results1 = await db.collection('User').updateOne(filter, updateDoc);
+        error = "Successfully uploaded refresh token";
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    // Send refresh token as cookie, access token regular
+    sendRefreshToken(res, refreshToken);
+    // res.cookie('refreshtoken', refreshToken, {
+    //     httpOnly: false,
+    //     domain: "localhost",
+    //     path: '/refresh_token',
+    // });
+
+    
+
+
+
+
 
     //here we are returning what we got back to the function
     //So we're returning an id, a firstname, lastname and an
     //error if any
-    var ret = {Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
+    var ret = {AccessToken : accesstoken, Flag:flag, Email:email, Validated:validated, Error:error, ID:id};
     res.status(200).json(ret);
+});
+
+// Logout API
+app.post('/api/logout', async (_req, res) => {
+    res.clearCookie("refreshtoken", { path: '/refresh_token'});
+
+    return res.send({
+        message: "Logged out",
+    })
+});
+
+// Get a new access token with a refresh token
+app.post('/refresh_token', async (req, res) => {
+    console.log('in refresh token');
+    const token = req.cookies.refreshtoken;
+
+    // If no token in request, return empty access token
+    if (!token) return res.send({ accesstoken: ''});
+
+    // Verify token
+    let payload = null;
+    try {
+        payload = verify(token, process.env.REFRESH_TOKEN_SECRET);
+    } catch (err) {
+        return res.send({ accesstoken: ''});
+    }
+
+    // Token verified validate user
+    // Get user from db
+    const db = client.db();
+    const user = await db.collection('User').find({Username:login,Password:password, RefreshToken: token}).toArray();
+
+    // if no user, return empty access token
+    if (!user) return res.send({ accesstoken: '' });
+
+    // Everything checks out!!! Let's create new tokens
+    const accesstoken = createAccessToken(user._id);
+    const refreshtoken = createRefreshToken(user._id);
+
+    // Stick refresh token in DB
+    const filter = {_id:user[0]._id};
+    try{        
+        const updateDoc = {
+            $set: {
+                RefreshToken:
+                    refreshToken,
+            },
+        }
+        const results1 = await db.collection('User').updateOne(filter, updateDoc);
+        error = "Successfully uploaded refresh token";
+    }
+    catch(e){
+        error = e.toString();
+    }
+
+    // Send both tokens to frontend
+    sendRefreshToken(res, refreshtoken);
+    return res.send({ accesstoken });
 });
 
 app.post('/api/register', async (req, res, next) => {  
@@ -100,12 +213,11 @@ app.post('/api/register', async (req, res, next) => {
     // outgoing: id, error  
 
     //create empty error string
-    var error = "Registration Complete"
+    var error = "Registration Complete";
     var validated = 0
     //req is what was sent over from the frontend
     //which is username, password and email
     const { username, password, email } = req.body;  
-
     try
     {
         //Connect with the database
@@ -113,7 +225,6 @@ app.post('/api/register', async (req, res, next) => {
 
         //before we add a user we need to see if the username is taken
         const result1 = await db.collection('User').find({Username:username}).toArray();
-
         //if we get a result that means that the username is taken and return with error
         if(result1.length > 0)
         {
@@ -153,9 +264,12 @@ app.post('/api/register', async (req, res, next) => {
         };
         sgMail.send(msg);
         
+        //create empty refresh token
+        const refreshToken = "";
+
         //create the body for a new user to add to the Users collection
         //We dont need to add an ID since MongoDB seems to do that for us
-        const newUser = {Username:username, Password:password, Validated:validated, Email:email, Code:validationCode};
+        const newUser = {Username:username, Password:password, Validated:validated, Email:email, Code:validationCode, RefreshToken:refreshToken};
 
         //if neither the username or email is taken, then we
         //can add the new user
@@ -186,6 +300,14 @@ app.post('/api/createGroup', async (req, res, next) => {
     //We dont need to add an ID since MongoDB seems to do that for us
     const newGroup = {Name:groupname};
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
          //Connect with the database
          const db = client.db();
 
@@ -242,7 +364,14 @@ app.post('/api/searchGroup', async (req, res, next) => {
     var _search = search.trim();
     
     try{
-        
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -281,12 +410,19 @@ app.post('/api/readGroup', async (req, res, next) => {
 
     //create a new variable with the search string being trimmed down of any extra whitespace
     var search = "";
-
     const {flag, userID} = req.body;
     //if flag equals 0 then we return everysingle group in the database
 
     if (flag == 0){
         try{
+            // Authorize user
+            const userAuth = isAuth(req);
+            console.log('here');
+            if (userAuth === null) {
+                res.send({
+                    err: 'Access Denied',
+                })
+            }
             //Connect to the database and try to find any groups
             const db = client.db();
 
@@ -355,8 +491,17 @@ app.post('/api/joinGroup', async (req, res, next) => {
     //which is the userID, as well as the groupID
     const {userID, groupID} = req.body;
 
-    try{
-        
+    try
+    {
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -399,7 +544,7 @@ app.post('/api/createIssue', async (req, res, next) => {
 
     //Create error variable
     var error = "";
-
+    var issueID = "";
     //Get what is being sent over from the frontend
     const {userID, memberID, groupID, topic, description, username} = req.body;
 
@@ -407,6 +552,14 @@ app.post('/api/createIssue', async (req, res, next) => {
     const newIssue = {MemberID:memberID, GroupID:groupID, Topic:topic, Description:description, Username:username}
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect with the database
         const db = client.db();
 
@@ -423,13 +576,14 @@ app.post('/api/createIssue', async (req, res, next) => {
 
         //if results1.length is not 0 then add the newIssue to the Issue collection
         const result = await db.collection('Issue').insertOne(newIssue);
+        issueID = result.insertedId.toString();
     }
     catch(e){
         error = e.toString();
     }
 
     //Return an error if any
-    var ret = {Error:error};
+    var ret = {Error:error, IssueID:issueID};
     res.status(200).json(ret)
 });
 
@@ -446,6 +600,14 @@ app.post('/api/readIssue', async (req, res, next) => {
     const {groupID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -488,6 +650,14 @@ app.post('/api/searchIssue', async (req, res, next) => {
     var _search = search.trim();
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -537,6 +707,14 @@ app.post('/api/replyToIssue', async (req, res, next) => {
     const newReply = {IssueID:issueID, Reply:reply, Author:username};
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect with the database
         const db = client.db();
 
@@ -565,6 +743,14 @@ app.post('/api/readReplies', async (req, res, next) => {
     const {issueID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -605,6 +791,14 @@ app.post('/api/readAllIssues', async (req, res, next) => {
     const {username} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -643,6 +837,14 @@ app.post('/api/resetPasswordLink', async (req, res, next) => {
     const {email} = req.body;
 
     try{
+        // Authorize user
+        // const userAuth = isAuth(req);
+        // if (userAuth === null) 
+        // {
+        //     res.send({
+        //         err: 'Access Denied',
+        //     })
+        // }
         //Connect with the database
         const db = client.db();
 
@@ -697,6 +899,14 @@ app.post('/api/changePassword', async (req, res, next) => {
 
     const filter = {_id:ObjectId(userID)};
     try{
+        // Authorize user
+        // const userAuth = isAuth(req);
+        // if (userAuth === null) 
+        // {
+        //     res.send({
+        //         err: 'Access Denied',
+        //     })
+        // }
         //Connect to the database
         const db = client.db();
 
@@ -729,6 +939,14 @@ app.post('/api/validateCode', async (req, res, next) => {
     const filter = {Username:username};
 
     try{
+        // Authorize user
+        // const userAuth = isAuth(req);
+        // if (userAuth === null) 
+        // {
+        //     res.send({
+        //         err: 'Access Denied',
+        //     })
+        // }
         //Connect to the database
         const db = client.db();
 
@@ -784,6 +1002,14 @@ app.post('/api/deleteGroup', async (req, res, next) => {
     const {userID,groupID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database
         const db = client.db();
 
@@ -854,6 +1080,14 @@ app.post('/api/leaveGroup', async (req, res, next) => {
     const {userID,groupID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database
         const db = client.db();
 

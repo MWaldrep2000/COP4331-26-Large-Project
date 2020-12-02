@@ -55,7 +55,7 @@ class MyIssueViewIssue extends Component {
         var js = JSON.stringify(obj);
 
         try {                
-            const response = await fetch(buildPath('api/replyToIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});           
+            const response = await fetch(buildPath('api/replyToIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});           
             var res = JSON.parse(await response.text());
             if( res.Error !== "" ) {                         
                 alert(res.Error);           

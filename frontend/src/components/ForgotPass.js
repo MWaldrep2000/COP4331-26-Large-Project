@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 function ForgotPass() {
 
     var uEmail;
+    var _ud = localStorage.getItem('user_data');
+    var ud = JSON.parse(_ud);
 
     const [message, setMessage] = useState('');
 
