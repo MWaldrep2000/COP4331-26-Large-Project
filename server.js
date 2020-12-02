@@ -397,6 +397,13 @@ app.post('/api/readGroup', async (req, res, next) => {
 
     if (flag == 0){
         try{
+            // Authorize user
+            const userAuth = isAuth(req);
+            if (userAuth === null) {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
             //Connect to the database and try to find any groups
             const db = client.db();
 
