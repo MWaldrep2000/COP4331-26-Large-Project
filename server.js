@@ -543,7 +543,7 @@ app.post('/api/createIssue', async (req, res, next) => {
 
     //Create error variable
     var error = "";
-
+    var issueID = "";
     //Get what is being sent over from the frontend
     const {userID, memberID, groupID, topic, description, username} = req.body;
 
@@ -575,13 +575,14 @@ app.post('/api/createIssue', async (req, res, next) => {
 
         //if results1.length is not 0 then add the newIssue to the Issue collection
         const result = await db.collection('Issue').insertOne(newIssue);
+        issueID = result.insertedId.toString();
     }
     catch(e){
         error = e.toString();
     }
 
     //Return an error if any
-    var ret = {Error:error};
+    var ret = {Error:error, IssueID:issueID};
     res.status(200).json(ret)
 });
 

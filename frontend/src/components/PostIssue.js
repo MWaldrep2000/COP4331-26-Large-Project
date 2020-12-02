@@ -38,18 +38,19 @@ class PostIssue extends Component {
         //const {userID, memberID, groupID, topic, description, username} = req.body;
         var obj = {userID:uid, memberID:1, groupID: this.props.pid,topic:this.state.topic, description:this.state.description, username: uname };        
         var js = JSON.stringify(obj);
-
+        var iss = "";
         try {                
             const response = await fetch(buildPath('api/createIssue'), {method:'POST',body:js,headers:{'Content-Type': 'application/json', 'authorization' : ud.AccessToken}});           
             var res = JSON.parse(await response.text());
+            iss = res.IssueID;
             if( res.Error !== "" ) {                         
                 alert(res.Error);           
             }        
         } catch(e) {            
             alert(e.toString());            
             return;        
-        }      
-
+        }
+        this.props.state.issues.push({Topic:this.state.topic, Description:this.state.description, Username: uname, _id:iss})
         this.props.close();
     }
     

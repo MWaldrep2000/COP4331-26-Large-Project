@@ -23,7 +23,9 @@ function UserProfile() {
             <div className="profile-text">
                 <p>Welcome to Hivemind, the best place to request assisstance in solving any issues you may have.</p>
                 <p>You can create, search or join groups. Once in a group you can post or reply to any issues other users might have.</p>
+                <br/>
                 <p>Number of groups you are a part of: XX</p>
+                <br/>
                 <p>Number of issues you have created: XX</p>
             </div>
         </div>
