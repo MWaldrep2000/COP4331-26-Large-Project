@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:startup_namer/loginResults.dart';
 import 'package:startup_namer/Register.dart';
+import 'package:startup_namer/pages/ChangePassword.dart';
 import 'package:startup_namer/pages/CreateUser.dart';
 import 'package:startup_namer/pages/Login.dart';
 import 'package:startup_namer/pages/AddGroup.dart';

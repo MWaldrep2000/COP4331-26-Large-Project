@@ -12,6 +12,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Verification.dart';
 
@@ -22,8 +23,12 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
-  final firstController = TextEditingController();
 
+
+  SharedPreferences prefs;
+  final LocalStorage storage = new LocalStorage('data');
+  final firstController = TextEditingController();
+  var test;
   @override
   void dispose() {
     firstController.dispose();
@@ -33,11 +38,22 @@ class _LoginState extends State<Login> {
   // @override
   // void initState() {
   //   super.initState();
-  //   _futureloginResults = fetchloginResults("", "");
+  //   _getUserData() async {
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     await prefs.setBool('Login', true);
+  //   }
+  //   // if(storage.getItem('ID') != null){
+  //   //   test = 1;
+  //   //   print('Data');
+  //   // } else {
+  //   //   test = 0;
+  //   //   print('No data');
+  //   // }
+  //
   // }
 
   User tempUser = new User("","");
-  final LocalStorage storage = new LocalStorage('data');
+
   Future<loginResults> _futureloginResults;
   loginResults currentUser;
 
@@ -45,6 +61,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
 
     return GestureDetector(
       onTap: () {
@@ -98,7 +115,7 @@ class _LoginState extends State<Login> {
                             controller: firstController,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
-                                labelText: 'Login',
+                                labelText: 'Username',
                                 labelStyle: TextStyle(
                                     color: Colors.black
                                 ),
@@ -156,6 +173,11 @@ class _LoginState extends State<Login> {
                               storage.setItem('Validated', currentUser.validated);
                               storage.setItem('Flag', currentUser.flag);
                               storage.setItem('User', tempUser.login);
+                              // _getUserData();
+
+                              // print('finding user data');
+                              // print(prefs.getBool('Login') ?? 0);
+
 
                               if (currentUser.validated == 1) {
                                 Navigator.pushReplacement(
@@ -249,4 +271,8 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+
+
+
 }
