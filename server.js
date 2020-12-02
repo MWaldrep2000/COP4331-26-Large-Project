@@ -397,6 +397,13 @@ app.post('/api/readGroup', async (req, res, next) => {
 
     if (flag == 0){
         try{
+            // Authorize user
+            const userAuth = isAuth(req);
+            if (userAuth === null) {
+            res.send({
+                err: 'Access Denied',
+            })
+            }
             //Connect to the database and try to find any groups
             const db = client.db();
 
@@ -465,8 +472,17 @@ app.post('/api/joinGroup', async (req, res, next) => {
     //which is the userID, as well as the groupID
     const {userID, groupID} = req.body;
 
-    try{
-        
+    try
+    {
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
+
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -517,6 +533,14 @@ app.post('/api/createIssue', async (req, res, next) => {
     const newIssue = {MemberID:memberID, GroupID:groupID, Topic:topic, Description:description, Username:username}
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect with the database
         const db = client.db();
 
@@ -556,6 +580,14 @@ app.post('/api/readIssue', async (req, res, next) => {
     const {groupID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -598,6 +630,14 @@ app.post('/api/searchIssue', async (req, res, next) => {
     var _search = search.trim();
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -647,6 +687,14 @@ app.post('/api/replyToIssue', async (req, res, next) => {
     const newReply = {IssueID:issueID, Reply:reply, Author:username};
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect with the database
         const db = client.db();
 
@@ -675,6 +723,14 @@ app.post('/api/readReplies', async (req, res, next) => {
     const {issueID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -715,6 +771,14 @@ app.post('/api/readAllIssues', async (req, res, next) => {
     const {username} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database and try to find any groups
         const db = client.db();
 
@@ -753,6 +817,14 @@ app.post('/api/resetPasswordLink', async (req, res, next) => {
     const {email} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect with the database
         const db = client.db();
 
@@ -807,6 +879,14 @@ app.post('/api/changePassword', async (req, res, next) => {
 
     const filter = {_id:ObjectId(userID)};
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database
         const db = client.db();
 
@@ -839,6 +919,14 @@ app.post('/api/validateCode', async (req, res, next) => {
     const filter = {Username:username};
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database
         const db = client.db();
 
@@ -894,6 +982,14 @@ app.post('/api/deleteGroup', async (req, res, next) => {
     const {userID,groupID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database
         const db = client.db();
 
@@ -964,6 +1060,14 @@ app.post('/api/leaveGroup', async (req, res, next) => {
     const {userID,groupID} = req.body;
 
     try{
+        // Authorize user
+        const userAuth = isAuth(req);
+        if (userAuth === null) 
+        {
+            res.send({
+                err: 'Access Denied',
+            })
+        }
         //Connect to the database
         const db = client.db();
 
