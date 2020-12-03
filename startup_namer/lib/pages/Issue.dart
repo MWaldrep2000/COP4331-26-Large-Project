@@ -162,7 +162,7 @@ class _IssueState extends State<Issue> {
                                                         width: 100,
                                                         child: Text(
                                                           "User: ${snapshot.data.replyList[i]['Author']}",
-                                                          overflow: TextOverflow.ellipsis,
+                                                          //overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ),
                                                       Padding(
@@ -172,7 +172,7 @@ class _IssueState extends State<Issue> {
                                                         width: 200,
                                                         child: Text(
                                                           snapshot.data.replyList[i]['Reply'],
-                                                          overflow: TextOverflow.ellipsis,
+                                                          // overflow: TextOverflow.ellipsis,
                                                         ),
                                                       ),
                                                       // RaisedButton(
